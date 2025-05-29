@@ -1,0 +1,15 @@
+# .github/workflows/sbom.yml
+name: SBOM
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  generate-sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: anchore/sbom-action@v0
+        with:
+          format: cyclonedx
+          output-file: sbom.cdx.json
