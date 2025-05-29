@@ -13,6 +13,12 @@ branches:
       required_pull_request_reviews:
         required_approving_review_count: 1
       enforce_admins: true
-      restrictions: null
+     # restrictions: null
+      restrictions: # add a whitelist
+        users:
+          - WahbaMousa-DevOps
+        teams:
+          - []
+        apps: []
       allow_force_pushes: false
       allow_deletions: false
