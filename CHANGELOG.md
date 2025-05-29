@@ -1230,7 +1230,7 @@
 
 ### Enhancements
 
-- Improve line numbered code block styling when using `{% highlight [linenos] %}` tag. [#513](https://github.com/mmistakes/minimal-mistakes/issues/513)
+- Improve line numbered code block styling when using `{% highlight linenos %}` tag. [#513](https://github.com/mmistakes/minimal-mistakes/issues/513)
 - Add English fallback to "Follow" button label. [#496](https://github.com/mmistakes/minimal-mistakes/pull/496)
 
 ### Bug Fixes
