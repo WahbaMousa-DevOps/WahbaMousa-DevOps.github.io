@@ -16,7 +16,7 @@ branches:
      # restrictions: null
       restrictions: # add a whitelist
         users:
-          - WahbaMousa-DevOps
+          - WahbaMousa
         teams:
           - []
         apps: []
