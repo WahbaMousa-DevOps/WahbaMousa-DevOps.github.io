@@ -11,7 +11,7 @@ branches:
           - "Scan with Trivy"
           - "Generate CycloneDX SBOM"
       required_pull_request_reviews:
-        required_approving_review_count: 0  #1
+        required_approving_review_count: 1  #1
       enforce_admins: false  # Admins can bypass all rules
      # restrictions: null # # No restrictions, anyone with repo access can push
       restrictions: # add a whitelist
