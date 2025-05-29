@@ -1,0 +1,16 @@
+# .github/workflows/trivy.yml
+name: Trivy Scan
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
