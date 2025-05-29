@@ -8,8 +8,8 @@ branches:
           - "CI - Run Unit Tests"
           - "CI - Lint Code"
           - "CI - Build Project"
-          - "Security - Trivy Scan"
-          - "Generate SBOM"
+          - "Trivy Vulnerability Scan"
+          - "Generate CycloneDX SBOM"
       required_pull_request_reviews:
         required_approving_review_count: 1
       enforce_admins: true
