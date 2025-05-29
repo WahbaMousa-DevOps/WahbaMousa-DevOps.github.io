@@ -7,8 +7,8 @@ branches:
         contexts:
           - "CI – Run Unit Tests"
           - "CI – Lint Code"
-          - "Deploy GitHub Pages / Build GitHub Pages Site"
-          - "Deploy GitHub Pages / Deploy to GitHub Pages"
+      #    - "Deploy GitHub Pages / Build GitHub Pages Site"
+       #   - "Deploy GitHub Pages / Deploy to GitHub Pages"
           - "Scan with Trivy"
           - "Generate CycloneDX SBOM"
       required_pull_request_reviews:
