@@ -1,25 +1,38 @@
-name: Documentation
-description: Found a typo or something that needs clarification?
+name: 📚 Documentation Fix
+description: Report typos, unclear content, or outdated documentation.
+labels: [documentation]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to open an issue and help make the docs better.
+        ## 📘 Documentation Improvement
+
+        Thanks for helping improve the documentation!  
+        Please provide details below so we can address the issue effectively.
 
   - type: textarea
     id: motivation
     attributes:
-      label: Motivation
+      label: ✏️ What Needs Improvement?
       description: |
-        Why should we update our docs?
+        What part of the documentation is confusing, outdated, or wrong?
+        Please be specific (e.g., broken link, unclear section, etc.).
     validations:
       required: true
 
   - type: textarea
     id: suggestion
     attributes:
-      label: Suggestion
+      label: 💡 Suggested Fix
       description: |
-        What should we do instead?
+        How should we fix or improve it? If you have wording suggestions, include them here.
     validations:
       required: true
+
+  - type: input
+    id: affected-page
+    attributes:
+      label: 🔗 Link to Affected Page (if any)
+      placeholder: https://aiopsvision.com/docs/...
+    validations:
+      required: false
