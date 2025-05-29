@@ -1,4 +1,4 @@
-name: Build Jekyll Site
+name: Deploy GitHub Pages
 
 on:
   push:
@@ -8,37 +8,35 @@ on:
   workflow_dispatch: {}
   repository_dispatch: {}
 
-jobs:
-  build:
-    name: CI - Build Project
-    runs-on: ubuntu-latest
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
+jobs:
+  build-deploy:
+    name: Build GitHub Pages Site
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-      - name: Cache Bundler Dependencies
-        uses: actions/cache@v4
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-bundler-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-bundler-
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
 
-      - name: Install Bundler and Dependencies
-        run: |
-          gem install bundler
-          bundle config set path vendor/bundle
-          bundle install
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v2
 
-      - name: Build Jekyll Site
-        run: bundle exec jekyll build
-
-      - name: Install dependencies
-        run: bundle install
-
-      - name: Fix dubious ownership issue
-        run: git config --global --add safe.directory /github/workspace
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build-deploy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v2

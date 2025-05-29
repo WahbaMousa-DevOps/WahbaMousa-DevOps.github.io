@@ -7,7 +7,8 @@ url: "https://wahba.aiopsvision.com"
 baseurl: "" # root domain
 repository: "WahbaMousa-DevOps/WahbaMousa-DevOps.github.io"
 minimal_mistakes_skin: "default"
-theme: minimal-mistakes-jekyll
+remote_theme: mmistakes/minimal-mistakes
+
 
 logo: "/assets/images/logo.jpg"
 masthead_title: "AIOps Vision"
