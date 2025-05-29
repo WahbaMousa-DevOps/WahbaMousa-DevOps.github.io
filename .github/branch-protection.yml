@@ -11,12 +11,12 @@ branches:
           - "Scan with Trivy"
           - "Generate CycloneDX SBOM"
       required_pull_request_reviews:
-        required_approving_review_count: 1
-      enforce_admins: false
+        required_approving_review_count: 0  #1
+      enforce_admins: true
      # restrictions: null
       restrictions: # add a whitelist
         users:
-          - WahbaMousa
+          - WahbaMousa-DevOps
         teams:
           - []
         apps: []
