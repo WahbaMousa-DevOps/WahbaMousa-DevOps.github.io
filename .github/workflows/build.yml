@@ -36,3 +36,6 @@ jobs:
 
       - name: Build Jekyll Site
         run: bundle exec jekyll build
+
+      - name: Install dependencies
+        run: bundle install

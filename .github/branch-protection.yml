@@ -11,14 +11,16 @@ branches:
           - "Scan with Trivy"
           - "Generate CycloneDX SBOM"
       required_pull_request_reviews:
-        required_approving_review_count: 0  #1
-      enforce_admins: true
-     # restrictions: null
+        required_approving_review_count: 1  #1
+      enforce_admins: false  # Admins can bypass all rules
+     # restrictions: null # # No restrictions, anyone with repo access can push
       restrictions: # add a whitelist
         users:
-          - WahbaMousa-DevOps
+          - WahbaMousa-DevOps # <-- This line specifies who can push
+        # - AnotherUserName
+        # - ThirdUserName
         teams:
-          - []
-        apps: []
-      allow_force_pushes: false
+          - [] #  (empty, no teams)
+        apps: [] # (empty, no apps)
+      allow_force_pushes: true # Allows force push for those who can push and here wahba only who can force push and Admin bypass 
       allow_deletions: false
