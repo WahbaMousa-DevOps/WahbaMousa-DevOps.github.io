@@ -1,7 +1,7 @@
 name: Enforce Dynamic Branch Protection Rules
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
   push:
     paths:
