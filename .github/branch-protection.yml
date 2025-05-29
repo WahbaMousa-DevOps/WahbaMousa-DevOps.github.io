@@ -5,10 +5,10 @@ branches:
       required_status_checks:
         strict: true
         contexts:
-          - "CI - Run Unit Tests"
-          - "CI - Lint Code"
+          - "CI – Run Unit Tests"
+          - "CI – Lint Code"
           - "CI - Build Project"
-          - "Trivy Vulnerability Scan"
+          - "Scan with Trivy"
           - "Generate CycloneDX SBOM"
       required_pull_request_reviews:
         required_approving_review_count: 1
