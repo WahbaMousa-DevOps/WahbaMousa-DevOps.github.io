@@ -1,47 +1,38 @@
-name: build
+name: Build Jekyll Site
 
 on:
   push:
-    branches:
-      - master
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch: {}
   repository_dispatch: {}
 
 jobs:
   build:
-    if: github.repository == 'mmistakes/minimal-mistakes'
+    name: CI - Build Project
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v4
 
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.2'
-    - name: Setup cache for Bundler
-      id: cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          docs/Gemfile.lock
-          docs/vendor/bundle
-        key: ${{ runner.os }}-bundler-${{ hashFiles('docs/Gemfile') }}
-        restore-keys: |
-          ${{ runner.os }}-bundler-
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
 
-    - name: Install - Bundler
-      env:
-        MAKE: make -j2
-      working-directory: docs/
-      run: |
-        bundle config set path vendor/bundle
-        bundle install --jobs=4 --retry=3
-        bundle clean
+      - name: Cache Bundler Dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-bundler-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bundler-
 
-    - name: Update Algolia index
-      working-directory: docs/
-      run: bundle exec jekyll algolia push
-      env:
-        ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-      continue-on-error: true
+      - name: Install Bundler and Dependencies
+        run: |
+          gem install bundler
+          bundle config set path vendor/bundle
+          bundle install
+
+      - name: Build Jekyll Site
+        run: bundle exec jekyll build
