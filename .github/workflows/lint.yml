@@ -1,5 +1,4 @@
-# .github/workflows/lint.yml
-name: Lint
+name: Lint Code
 
 on:
   pull_request:
@@ -7,6 +6,7 @@ on:
 
 jobs:
   lint:
+    name:  CI - Lint Code
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

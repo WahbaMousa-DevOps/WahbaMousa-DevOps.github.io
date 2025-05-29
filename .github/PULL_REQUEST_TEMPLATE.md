@@ -1,30 +1,20 @@
-<!--
-  Thanks for creating a Pull Request! Before you submit, please make sure
-  you've done the following:
+# 🚀 Pull Request
 
-  - Read the contributing document at https://github.com/mmistakes/minimal-mistakes#contributing
--->
+## 📄 Description
+Describe the changes made and the motivation behind them.
 
-<!--
-  Choose one of the following by uncommenting it:
--->
+## 🧠 Context
+(Optional) Link to related issues or discussion threads.
 
-<!-- This is a bug fix. -->
-<!-- This is an enhancement or feature. -->
-<!-- This is a documentation change. -->
+## 🔍 Type of Change
+- [ ] Bug fix 🐛
+- [ ] New feature 🚀
+- [ ] Documentation 📝
+- [ ] Refactor / Code Cleanup ♻️
+- [ ] Other (please describe):
 
-## Summary
-
-<!--
-  Provide a description of what your pull request changes.
--->
-
-## Context
-
-<!--
-  Is this related to any GitHub issue(s)?
--->
-
-<!--
-  Please confirm that you want to submit this Pull Request to Minimal Mistakes, the free Jekyll theme by Michael Rose, by deleting this comment block.
--->
+## ✅ Checklist
+- [ ] I have tested the changes locally
+- [ ] I have updated documentation if needed
+- [ ] I have linked related issues or PRs
+- [ ] I have assigned relevant reviewers
