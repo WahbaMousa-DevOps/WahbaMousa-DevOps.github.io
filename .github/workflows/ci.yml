@@ -1,18 +1,42 @@
 name: CI Pipeline 
 #  Centralized CI Aggregator.
+
 on:
   push:
     branches: [develop, release, main, 'feature/*', 'hotfix/*']
+
 jobs:
   call-tests:
     uses: ./.github/workflows/test.yml
+
   call-lint:
     uses: ./.github/workflows/lint.yml
+
   call-trivy:
     uses: ./.github/workflows/trivy.yml
+
   call-sbom:
     uses: ./.github/workflows/sbom.yml
+
   call-codeql:
     uses: ./.github/workflows/codeql.yml
+
   call-build:
     uses: ./.github/workflows/build.yml
+
+  reupload-artifact:
+    name: Re-upload Artifact from Build Pipeline
+    runs-on: ubuntu-latest
+    needs: call-build  # Ensure the build job finishes first before downloading the artifact
+    steps:
+      - name: Download artifact from reusable workflow
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output  # Must match the artifact name from build.yml
+          path: ./_site       # Path must match what's used in deploy workflow
+
+      - name: Re-upload artifact for deploy workflow_run visibility
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output  # Re-uploads the same artifact name so that Deploy to Staging can access it
+          path: ./_site       # Keep the same folder structure
