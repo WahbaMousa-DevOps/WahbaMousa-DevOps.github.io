@@ -11,13 +11,14 @@ on:
       - release
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read          # Allows reading repository contents (needed for actions like checkout)
+  pages: write            # Grants permission to deploy to GitHub Pages (required by deploy-pages@v4)
+  id-token: write         # Enables generating OpenID Connect (OIDC) tokens for secure deployments (used by GitHub Pages and other OIDC-auth-enabled actions)
 
 concurrency:
-  group: "deploy-staging"
-  cancel-in-progress: false
+  group: "deploy-staging"        # Ensures only one deployment to staging runs at a time for this group (prevents race conditions)
+  cancel-in-progress: false      # Do not cancel any currently running deployment — let it finish before new one starts
+
 
 jobs:
   deploy-staging:
@@ -34,7 +35,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-output
+          name: build-output-reupload
           path: ./_site  # correct key: path (not source/destination)
 
       - name: Setup Pages
