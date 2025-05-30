@@ -36,4 +36,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 3 # will added to same prod workflow name this is github pages actions.
+        uses: actions/deploy-pages@v4 # will added to same prod workflow name this is github pages actions.
