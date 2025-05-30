@@ -5,12 +5,12 @@ branches:
       required_status_checks:
         strict: true
         contexts:
-          - "Run Unit Tests / CI – Run Unit Tests"
-          - "Lint Code / CI – Lint Code"
-          - "Trivy Vulnerability Scan / Scan with Trivy"
-          - "Generate SBOM / Generate CycloneDX SBOM"
-          - "CodeQL Security Scan / CodeQL Security Analysis"
-          - "Build Pipeline/Build GitHub Pages Site"
+          - "CI Pipeline / call-tests"
+          - "CI Pipeline / call-lint" 
+          - "CI Pipeline / call-trivy"
+          - "CI Pipeline / call-sbom"
+          - "CI Pipeline / call-codeql"
+          - "CI Pipeline / call-build"
         # - "Deploy to Staging" # use it only is stageging job run on separate branch but on same branch this will fail because stagging will run on same branch and this condition will be required even staggin still need to run for first time.
 
       required_pull_request_reviews:
