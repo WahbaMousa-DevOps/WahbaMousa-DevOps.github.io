@@ -37,6 +37,9 @@ jobs:
           name: build-output
           path: ./_site  # correct key: path (not source/destination)
 
+      - name: Copy staging CNAME
+        run: cp CNAME.staging _site/CNAME
+
       - name: Setup Pages
         uses: actions/configure-pages@v5  # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
 
