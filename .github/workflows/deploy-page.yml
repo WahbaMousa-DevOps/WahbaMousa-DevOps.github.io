@@ -33,7 +33,35 @@ jobs:
     environment:
       name: production-github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
+
+
     steps:
-      - name: Deploy to GitHub Pages # appear under in workflow name
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build Site
+        run: |
+          echo "Your static site build step here"
+          # e.g., bundle exec jekyll build
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # in action tab under workflow name pages build and deployment "for all this file" this line tell GitHub actually know where to deploy
+        uses: actions/deploy-pages@v4
+
+
+
+
+
+
+
+    # steps: # only enough with workflow []
+    #   - name: Deploy to GitHub Pages # appear under in workflow name
+    #     id: deployment
+    #     uses: actions/deploy-pages@v4 # in action tab under workflow name pages build and deployment "for all this file" this line tell GitHub actually know where to deploy
