@@ -2,7 +2,7 @@ name: CI Pipeline
 #  Centralized CI Aggregator
 on:
   push:
-    branches: [branch1, 'feature/*', 'hotfix/*']
+    branches: [main, branch1, 'feature/*', 'hotfix/*']
 
 jobs:
   call-tests:
