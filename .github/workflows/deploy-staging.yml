@@ -23,8 +23,8 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5 # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
 
-      - name: Set staging CNAME
-        run: echo "staging.aiopsvision.com" > ./CNAME
+      # - name: Set staging CNAME
+      #   run: echo "staging.aiopsvision.com" > ./CNAME
 
       - name: Build for Staging
         run: |
