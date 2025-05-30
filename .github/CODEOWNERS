@@ -1,0 +1,14 @@
+# CODEOWNERS
+# Automatically assign @WahbaMousa-DevOps as the sole code owner of this repo
+
+# All files in the repository
+* @WahbaMousa-DevOps
+
+# GitHub configuration and workflows
+.github/ @WahbaMousa-DevOps
+
+# Jekyll config file (used by GitHub Pages)
+_config.yml @WahbaMousa-DevOps
+
+# Main images folders
+assets/ @WahbaMousa-DevOps

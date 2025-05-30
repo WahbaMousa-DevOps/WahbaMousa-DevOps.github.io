@@ -12,21 +12,21 @@ try:
     with open(RULESET_FILE, "r") as f:
         data = yaml.safe_load(f)
 except Exception as e:
-    print(f"❌ Failed to read YAML: {e}")
+    print(f"Failed to read YAML: {e}")
     sys.exit(1)
 
 # Extract main branch protection
 try:
     branch_config = data["branches"][0]["protection"]
 except (KeyError, IndexError) as e:
-    print(f"❌ Invalid YAML structure: {e}")
+    print(f"Invalid YAML structure: {e}")
     sys.exit(1)
 
 # Ensure required top-level keys are present
 required_keys = ["required_pull_request_reviews", "required_status_checks"]
 for key in required_keys:
     if key not in branch_config:
-        print(f"❌ Missing required key: {key}")
+        print(f"Missing required key: {key}")
         sys.exit(1)
 
 # Construct full payload
@@ -54,7 +54,7 @@ with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.json') as tmp
 # Apply with GitHub CLI
 repo = os.environ.get("GITHUB_REPOSITORY")
 if not repo:
-    print("❌ GITHUB_REPOSITORY env var is not set")
+    print("GITHUB_REPOSITORY env var is not set")
     sys.exit(1)
 
 cmd = [
@@ -63,10 +63,10 @@ cmd = [
     "--input", tmp_path
 ]
 
-print(f"🔐 Applying branch protection from: {RULESET_FILE}")
+print(f"Applying branch protection from: {RULESET_FILE}")
 try:
     subprocess.run(cmd, check=True)
-    print("✅ Branch protection applied successfully.")
+    print("Branch protection applied successfully.")
 except subprocess.CalledProcessError as e:
-    print("❌ Failed to apply branch protection.")
+    print("Failed to apply branch protection.")
     sys.exit(e.returncode)

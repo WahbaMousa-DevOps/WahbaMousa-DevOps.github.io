@@ -15,11 +15,13 @@ branches:
 
       required_pull_request_reviews:
         required_approving_review_count: 1  # Requires 1 approval for ALL users (except admins)
+        dismiss_stale_reviews: true # If someone approved your pull request (PR), but you pushed new commits after that, their old approval becomes stale and is automatically removed. Prevents old approvals from being valid after the code changes — ensures the reviewer re-reads and re-approves the updated PR.
+        require_code_owner_reviews: true #  A matching who is in codeowner file must review and approve before merging. false → Any reviewer (not necessarily a code owner) is fine.
       enforce_admins: false  # Admins bypass ALL rules (approval + status checks)
       restrictions:
         users:
           - WahbaMousa-DevOps  # Can push directly to main branch (bypass PR process entirely)
         teams: []
         apps: []
-      allow_force_pushes: true  # Only WahbaMousa-DevOps can force push to main
+      allow_force_pushes: true  # Only who is listed under restrictions.users WahbaMousa-DevOps can force push to main if false even if listed cannot use git push --force
       allow_deletions: false   # Nobody can delete main branch
