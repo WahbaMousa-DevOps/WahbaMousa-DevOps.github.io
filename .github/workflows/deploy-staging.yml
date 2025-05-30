@@ -7,7 +7,7 @@ on:
     types:
       - completed
     branches: # only when merge pr on main not when open pr and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
-      - main
+      - branch1
 
 jobs:
   deploy-staging:
@@ -23,8 +23,8 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5 # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
 
-      # - name: Set staging CNAME
-      #   run: echo "staging.aiopsvision.com" > ./CNAME
+      - name: Set staging CNAME
+        run: echo "staging.aiopsvision.com" > ./CNAME
 
       - name: Build for Staging
         run: |
