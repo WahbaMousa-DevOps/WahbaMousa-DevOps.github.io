@@ -26,7 +26,7 @@ jobs:
     # && github.event_name == 'push' && github.ref == 'refs/heads/main' 
     name: Deploy to GitHub Pages # appear in this work flow main name run
     runs-on: ubuntu-latest
-    needs: build
+    #needs: build  # one job and no dependencies
     permissions:
       pages: write
       id-token: write
