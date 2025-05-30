@@ -25,7 +25,7 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-artifact@v4  # Upload artifact for later use (inside same workflow only)
         with:
-          name: build-output-reupload     # Custom name to avoid conflict when re-uploading later
+          name: build-output-temp     # Custom name to avoid conflict when re-uploading later
           path: ./_site
 
 
