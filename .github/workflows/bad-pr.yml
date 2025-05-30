@@ -1,9 +1,7 @@
 name: Cleanup Bad PRs
 
 on:
-  push:
-    branches: [main]
-  pull_request_target:
+  pull_request:
     types: [opened, reopened, closed]
 
 permissions:
