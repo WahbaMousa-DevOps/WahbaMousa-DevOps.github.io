@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4 # checkout repo to workflow can work for build test and so on.
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4 # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
+        uses: actions/configure-pages@v5 # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
 
       - name: Set staging CNAME
         run: echo "staging.aiopsvision.com" > ./CNAME
