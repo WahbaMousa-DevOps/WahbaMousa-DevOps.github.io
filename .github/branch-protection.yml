@@ -11,7 +11,7 @@ branches:
           - "Generate SBOM / Generate CycloneDX SBOM"
           - "CodeQL Security Scan / CodeQL Security Analysis"
           - "Build Pipeline/Build GitHub Pages Site"
-          - "Deploy to Staging"
+        # - "Deploy to Staging" # use it only is stageging job run on separate branch but on same branch this will fail because stagging will run on same branch and this condition will be required even staggin still need to run for first time.
 
       required_pull_request_reviews:
         required_approving_review_count: 1  #1

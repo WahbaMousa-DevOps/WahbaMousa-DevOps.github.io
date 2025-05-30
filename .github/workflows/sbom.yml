@@ -1,10 +1,7 @@
 name: Generate SBOM
 
 on:
-  push:
-    branches: [branch1]
-  #pull_request:
-   # branches: [main]
+  workflow_call:
 
 jobs:
   generate-sbom:

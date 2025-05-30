@@ -1,8 +1,8 @@
 name: Build Pipeline
 
 on:
-  push:
-    branches: [branch1, 'feature/*', 'hotfix/*']  # Feature branches only
+  workflow_call:
+
 
 jobs:
 

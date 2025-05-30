@@ -5,7 +5,7 @@ on:
     workflows: ["CI Pipeline"]
     types:
       - completed
-    branches:
+    branches: # only when open pr on main and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
       - main
 
 jobs:

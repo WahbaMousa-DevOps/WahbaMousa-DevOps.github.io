@@ -1,10 +1,7 @@
 name: Trivy Vulnerability Scan
 
 on:
-  push:
-    branches: [branch1]
-  #pull_request:
-   # branches: [main]
+  workflow_call:
 
 jobs:
   trivy:
