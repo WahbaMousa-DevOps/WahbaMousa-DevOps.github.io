@@ -1,10 +1,10 @@
 name: Deploy GitHub Pages # has no effect change with actions/deploy-pages@v4 step
 
 on:
-  workflow_run: 
-    workflows: ["Deploy to Staging"]  
-    types: [completed]
-    branches: [main]
+  # workflow_run:  # disable this because if active will overwrite staging temporary CNAME file and cannot reach staging website to check. Note after trigger this flow manually staging site CNAME will be overwritten.
+  #   workflows: ["Deploy to Staging"]  
+  #   types: [completed]
+  #   branches: [main]
     #  just a trigger that tells GitHub to run deploy-page.yml after those workflows finish. It does not replace branch protection rules. Branch protection is enforced by GitHub, not by workflows.
   #  all your workflows (e.g., test.yml, trivy.yml) do run in parallel, and yes, that's good and professional.
   workflow_dispatch: {} # alow manual trigger for workflow run from UI, helpful to give you time to check staging.
