@@ -1,11 +1,12 @@
 name: Deploy to Staging
 
 on:
+  # workflow_dispatch: {} # Best practice For production use it only and remove workflow_run or add a manual approval step (like environment: { reviewers: [...] })
   workflow_run:
     workflows: ["CI Pipeline"]
     types:
       - completed
-    branches: # only when open pr on main and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
+    branches: # only when merge pr on main not when open pr and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
       - main
 
 jobs:
@@ -14,13 +15,16 @@ jobs:
     name: Deploy to Staging Preview
     runs-on: ubuntu-latest
     environment:
-      name: staging
+      name: staging-github-pages
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # checkout repo to workflow can work for build test and so on.
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v4 # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
+
+      - name: Set staging CNAME
+        run: echo "staging.aiopsvision.com" > ./CNAME
 
       - name: Build for Staging
         run: |
@@ -28,8 +32,8 @@ jobs:
           # build command here, or Jekyll if static
 
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v3 # upload artifact to gihtub pages to be vaid to next steps to build page as separate step between ci/cd
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v4 3 # will added to same prod workflow name this is github pages actions.
