@@ -35,7 +35,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-output-temp
+          name: build-output
           path: ./_site  # correct key: path (not source/destination)
 
       - name: Copy staging CNAME

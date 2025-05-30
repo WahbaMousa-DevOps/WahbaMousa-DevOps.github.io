@@ -39,5 +39,5 @@ jobs:
       - name: Re-upload artifact for deploy workflow_run visibility
         uses: actions/upload-artifact@v4
         with:
-          name: build-output-temp      # Re-uploads with the same name for staging workflow
+          name: build-output     # Re-uploads with the same name for staging workflow
           path: ./_site
