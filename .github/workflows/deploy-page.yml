@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   workflow_run: 
-    workflows: ["CI Pipeline"]  
+    workflows: ["Deploy to Staging"]  
     types: [completed]
     branches: [main]
     #  just a trigger that tells GitHub to run deploy-page.yml after those workflows finish. It does not replace branch protection rules. Branch protection is enforced by GitHub, not by workflows.
