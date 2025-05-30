@@ -1,0 +1,50 @@
+# Deploy to Staging
+name: Deploy to Staging
+
+on:
+  # workflow_dispatch: {} # Best practice For production use it only and remove workflow_run or add a manual approval step (like environment: { reviewers: [...] })
+  workflow_run:
+    workflows: ["CI Pipeline"]  # Match the name of the workflow that builds artifacts
+    types:
+      - completed
+    branches:  # only when merge pr on main not when open pr and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
+      - branch1
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "deploy-staging"
+  cancel-in-progress: false
+
+jobs:
+  deploy-staging:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deploy to Staging Preview
+    runs-on: ubuntu-latest
+    environment:
+      name: staging-github-pages
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4  # checkout repo to workflow can work for build test and so on.
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: ./_site  # correct key: path (not source/destination)
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5  # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3  # upload artifact to gihtub pages to be vaid to next steps to build page as separate step between ci/cd
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4  # will added to same prod workflow name this is github pages actions.

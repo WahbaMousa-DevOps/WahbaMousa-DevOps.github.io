@@ -1,0 +1,28 @@
+name: Trivy Vulnerability Scan
+
+on:
+  workflow_call:
+
+jobs:
+  trivy:
+    name: Scan with Trivy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy on File System
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+          format: table
+          output: trivy-results.txt
+
+      - name: Upload Trivy Scan Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-scan-results
+          path: trivy-results.txt
