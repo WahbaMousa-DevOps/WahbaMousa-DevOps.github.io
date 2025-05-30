@@ -2,9 +2,9 @@ name: Generate SBOM
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: [branch1]
+  #pull_request:
+   # branches: [main]
 
 jobs:
   generate-sbom:

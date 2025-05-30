@@ -1,0 +1,41 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_run: 
+    workflows: ["CI Pipeline"]  
+    types: [completed]
+    branches: [main]
+    #  just a trigger that tells GitHub to run deploy-page.yml after those workflows finish. It does not replace branch protection rules. Branch protection is enforced by GitHub, not by workflows.
+  #  all your workflows (e.g., test.yml, trivy.yml) do run in parallel, and yes, that's good and professional.
+  workflow_dispatch: {} # alow manual trigger for workflow run from UI.
+  #repository_dispatch: {} #  Allow the workflow to be triggered externally via API (e.g., from another repo or system using a webhook or GitHub API call).
+
+# Prevent concurrent deployments
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} 
+    # && github.event_name == 'push' && github.ref == 'refs/heads/main' 
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
