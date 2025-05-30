@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} 
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }} 
     # && github.event_name == 'push' && github.ref == 'refs/heads/main' 
     name: Deploy to GitHub Pages # appear in this work flow main name run
     runs-on: ubuntu-latest
