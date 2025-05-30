@@ -8,7 +8,7 @@ on:
     types:
       - completed
     branches:  # only when merge pr on main not when open pr and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
-      - branch1
+      - release
 
 permissions:
   contents: read
