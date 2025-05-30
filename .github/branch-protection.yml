@@ -14,16 +14,12 @@ branches:
         # - "Deploy to Staging" # use it only is stageging job run on separate branch but on same branch this will fail because stagging will run on same branch and this condition will be required even staggin still need to run for first time.
 
       required_pull_request_reviews:
-        required_approving_review_count: 1  #1
-      enforce_admins: false  # Admins can bypass all rules
-     # restrictions: null # # No restrictions, anyone with repo access can push
-      restrictions: # add a whitelist
+        required_approving_review_count: 1  # Requires 1 approval for ALL users (except admins)
+      enforce_admins: false  # Admins bypass ALL rules (approval + status checks)
+      restrictions:
         users:
-          - WahbaMousa-DevOps # <-- This line specifies who can push
-        # - AnotherUserName
-        # - ThirdUserName
-        teams:
-          - [] #  (empty, no teams)
-        apps: [] # (empty, no apps)
-      allow_force_pushes: true # Allows force push for those who can push and here wahba only who can force push and Admin bypass 
-      allow_deletions: false
+          - WahbaMousa-DevOps  # Can push directly to main branch (bypass PR process entirely)
+        teams: []
+        apps: []
+      allow_force_pushes: true  # Only WahbaMousa-DevOps can force push to main
+      allow_deletions: false   # Nobody can delete main branch

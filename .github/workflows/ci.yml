@@ -2,20 +2,54 @@ name: CI Pipeline
 #  Centralized CI Aggregator
 on:
   push:
-    branches: [branch1, 'feature/*', 'hotfix/*']  # Dev branches only
+    branches: [branch1, 'feature/*', 'hotfix/*']
   pull_request:
-    branches: [main]  # PRs targeting main
+    types: [opened, synchronize, reopened]
+  pull_request_target:  # This allows auto-run for trusted users to bypass pending checks when oprn pr
+    types: [opened, synchronize, reopened]
 
 jobs:
+  # Add security check first
+  security-check:
+    runs-on: ubuntu-latest
+    outputs:
+      trusted: ${{ steps.check.outputs.trusted }}
+    steps:
+      - name: Check if trusted user
+        id: check
+        run: |
+          if [[ "${{ github.actor }}" == "WahbaMousa-DevOps" ]] || [[ "${{ github.event.pull_request.author_association }}" == "COLLABORATOR" ]] || [[ "${{ github.event.pull_request.author_association }}" == "OWNER" ]]; then
+            echo "trusted=true" >> $GITHUB_OUTPUT
+          else
+            echo "trusted=false" >> $GITHUB_OUTPUT
+          fi
+
   call-tests:
-    uses: ./.github/workflows/test.yml
+    needs: security-check
+    if: needs.security-check.outputs.trusted == 'true' || github.event_name == 'push'
+    uses: ./.github/workflows/tests.yml
+
   call-lint:
+    needs: security-check
+    if: needs.security-check.outputs.trusted == 'true' || github.event_name == 'push'
     uses: ./.github/workflows/lint.yml
+
   call-trivy:
+    needs: security-check
+    if: needs.security-check.outputs.trusted == 'true' || github.event_name == 'push'
     uses: ./.github/workflows/trivy.yml
+
   call-sbom:
+    needs: security-check
+    if: needs.security-check.outputs.trusted == 'true' || github.event_name == 'push'
     uses: ./.github/workflows/sbom.yml
+
   call-codeql:
+    needs: security-check
+    if: needs.security-check.outputs.trusted == 'true' || github.event_name == 'push'
     uses: ./.github/workflows/codeql.yml
+
   call-build:
+    needs: security-check
+    if: needs.security-check.outputs.trusted == 'true' || github.event_name == 'push'
     uses: ./.github/workflows/build.yml
