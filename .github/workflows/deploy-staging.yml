@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v4  # checkout repo to workflow can work for build test and so on.
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: build-output-stage
           path: ./_site  # correct key: path (not source/destination)
