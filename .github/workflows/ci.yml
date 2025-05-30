@@ -27,7 +27,7 @@ jobs:
   reupload-artifact:
     name: Re-upload Artifact from Build Pipeline
     runs-on: ubuntu-latest
-    needs: call-build  # Ensures this runs only after the build job finishes
+    needs: call-build  # Ensures this runs only after the build job finishes.
 
     steps:
       - name: Download artifact from reusable workflow
