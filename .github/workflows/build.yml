@@ -2,7 +2,7 @@
 name: Build Pipeline
 
 on:
-  workflow_call:  # Called from other workflows via 'workflow_call'
+  workflow_call:  # Makes this workflow callable from another workflow using 'uses:'
 
 jobs:
   build:
@@ -11,22 +11,23 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # Required to access the repo content
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v5  # Configures environment for GitHub Pages (used by Jekyll)
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./
-          destination: ./_site
+          source: ./              # Source directory for Jekyll
+          destination: ./_site    # Output directory (build result goes here)
 
       - name: Upload Pages Artifact
-        uses: actions/upload-artifact@v4  # Use artifact upload for later deploys
+        uses: actions/upload-artifact@v4  # Upload artifact for later use (inside same workflow only)
         with:
-          name: build-output
+          name: build-output-temp     # Custom name to avoid conflict when re-uploading later
           path: ./_site
+
 
   # test:
   #   name: Run Unit Tests
