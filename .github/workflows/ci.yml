@@ -1,5 +1,5 @@
 name: CI Pipeline 
-#  Centralized CI Aggregator
+#  Centralized CI Aggregator.
 on:
   push:
     branches: [develop, 'feature/*', 'hotfix/*']
