@@ -43,6 +43,9 @@ jobs:
       - name: Set Staging CNAME
         run: echo "staging.aiopsvision.com" > _site/CNAME
 
+      - name: Copy staging CNAME
+        run: cp CNAME.staging _site/CNAME
+
       - name: Setup Pages
         uses: actions/configure-pages@v5  # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
 
@@ -56,3 +59,4 @@ jobs:
         id: deployment    
 
       - run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+
