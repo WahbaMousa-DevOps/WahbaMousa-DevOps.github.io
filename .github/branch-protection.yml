@@ -11,10 +11,7 @@ branches:
           - "CI Pipeline / call-trivy"
           - "CI Pipeline / call-sbom"
           - "CI Pipeline / call-codeql"
-          # - "CI Pipeline / call-build"
-          # - "CI Pipeline / reupload-artifact"
-        # - "Deploy to Staging" # use it only is stageging job run on separate branch but on same branch this will fail because stagging will run on same branch and this condition will be required even staggin still need to run for first time.
-
+        
       required_pull_request_reviews:
         required_approving_review_count: 1  # Requires 1 approval for ALL users (except admins)
         dismiss_stale_reviews: true # If someone approved your pull request (PR), but you pushed new commits after that, their old approval becomes stale and is automatically removed. Prevents old approvals from being valid after the code changes — ensures the reviewer re-reads and re-approves the updated PR.
