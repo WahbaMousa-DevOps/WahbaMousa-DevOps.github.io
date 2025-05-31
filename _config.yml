@@ -36,7 +36,6 @@ author:
     - label: "Website"
       icon: "fas fa-globe"
       url: ${{ ENV_BASE_URL }}
-
 footer:
   links:
     - label: "GitHub"
