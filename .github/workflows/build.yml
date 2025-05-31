@@ -16,6 +16,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4  # Required to access the repo content
 
+      - name: Clean workspace
+        run: rm -rf _site || true
+
       - name: Setup Pages
         uses: actions/configure-pages@v5  # Configures environment for GitHub Pages (used by Jekyll)
 
