@@ -2,10 +2,10 @@ name: Build Pipeline
 
 on:
   workflow_call:
-    inputs:
-      environment:
-        required: true
-        type: string
+    # inputs:
+    #   environment:
+    #     required: true
+    #     type: string
 
 jobs:
   build:
