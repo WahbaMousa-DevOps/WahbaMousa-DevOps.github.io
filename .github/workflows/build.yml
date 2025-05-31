@@ -1,33 +1,32 @@
-# Build Pipeline (Reusable Workflow)
 name: Build Pipeline
 
 on:
-  workflow_call:  # Makes this workflow callable from another workflow using 'uses:'
+  workflow_call:
+    # inputs:
+    #   environment:
+    #     required: true
+    #     type: string
 
 jobs:
   build:
-    name: Build GitHub Pages Site
+    name: Build Site
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4  # Required to access the repo content
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5  # Configures environment for GitHub Pages (used by Jekyll)
-
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+      - uses: actions/checkout@v4
+      - run: rm -rf _site || true
+      - uses: actions/configure-pages@v5
+      - uses: actions/jekyll-build-pages@v1
         with:
-          source: ./              # Source directory for Jekyll
-          destination: ./_site    # Output directory (build result goes here)
+          source: ./ # Source directory for Jekyll
+          destination: ./_site # Output directory (build result goes here)
+        # env:
+        #   ENV_BASE_URL: ${{inputs.environment == 'staging'?'https://staging.aiopsvision.com':'https://wahba.aiopsvision.com'}}
+      - uses: actions/upload-artifact@v4
 
-      - name: Upload Pages Artifact
-        uses: actions/upload-artifact@v3  # Upload artifact for later use (inside same workflow only)
         with:
-          name: build-output-temp     # Custom name to avoid conflict when re-uploading later
+          name: build-artifact-temp
           path: ./_site
-
+       
 
   # test:
   #   name: Run Unit Tests

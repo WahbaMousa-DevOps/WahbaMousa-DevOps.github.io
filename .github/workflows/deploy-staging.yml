@@ -2,21 +2,23 @@
 name: Deploy to Staging
 
 on:
-  workflow_dispatch: {} # Best practice For production use it only and remove workflow_run or add a manual approval step (like environment: { reviewers: [...] })
+  #workflow_dispatch: {} # Best practice For production use it only and remove workflow_run or add a manual approval step (like environment: { reviewers: [...] })
   workflow_run:
     workflows: ["CI Pipeline"]  # Match the name of the workflow that builds artifacts
     types:
       - completed
     branches:  # only when merge pr on main not when open pr and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
       - release
+      - main
 
 permissions:
+  actions: read
   contents: read          # Allows reading repository contents (needed for actions like checkout)
   pages: write            # Grants permission to deploy to GitHub Pages (required by deploy-pages@v4)
   id-token: write         # Enables generating OpenID Connect (OIDC) tokens for secure deployments (used by GitHub Pages and other OIDC-auth-enabled actions)
 
 concurrency:
-  group: "deploy-staging"        # Ensures only one deployment to staging runs at a time for this group (prevents race conditions)
+  group: "staging-deploy-${{ github.ref }}"       # Ensures only one deployment to staging runs at a time for this group (prevents race conditions)
   cancel-in-progress: false      # Do not cancel any currently running deployment — let it finish before new one starts
 
 
@@ -26,9 +28,10 @@ jobs:
     name: Deploy to Staging Preview
     runs-on: ubuntu-latest
     environment:
-      name: staging-github-pages
-
+      name: staging
+      url: https://staging.aiopsvision.com
     steps:
+     
       - name: Checkout
         uses: actions/checkout@v4  # checkout repo to workflow can work for build test and so on.
 
@@ -37,6 +40,8 @@ jobs:
         with:
           name: build-output
           path: ./_site  # correct key: path (not source/destination)
+      - name: Set Staging CNAME
+        run: echo "staging.aiopsvision.com" > _site/CNAME
 
       - name: Copy staging CNAME
         run: cp CNAME.staging _site/CNAME
@@ -45,10 +50,13 @@ jobs:
         uses: actions/configure-pages@v5  # under action tab under workflow with name setup pages it configre page on website to show website content according to _config.yml
 
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3  # upload artifact to gihtub pages to be vaid to next steps to build page as separate step between ci/cd
+        uses: actions/upload-pages-artifact@v2  # upload artifact to gihtub pages to be vaid to next steps to build page as separate step between ci/cd
         with:
           path: ./_site
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4  # will added to same prod workflow name this is github pages actions.
+        id: deployment    
+
+      - run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+

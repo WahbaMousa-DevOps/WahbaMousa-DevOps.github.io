@@ -1,43 +1,44 @@
-name: CI Pipeline 
-#  Centralized CI Aggregator.
+name: CI Pipeline
 
 on:
   push:
-    branches: [develop, release, main, 'feature/*', 'hotfix/*']  # Triggers for all branches including feature & hotfix
+    branches: [develop, release, main, 'feature/*', 'hotfix/*']
+
+# env:
+#   ENVIRONMENT: ${{ contains('release develop', github.ref_name) && 'staging' || 'production' }}
 
 jobs:
   call-tests:
-    uses: ./.github/workflows/test.yml  # Reusable unit test job
+    uses: ./.github/workflows/test.yml
 
   call-lint:
-    uses: ./.github/workflows/lint.yml  # Code linting job
+    uses: ./.github/workflows/lint.yml
 
   call-trivy:
-    uses: ./.github/workflows/trivy.yml  # Security scan job
+    uses: ./.github/workflows/trivy.yml
 
   call-sbom:
-    uses: ./.github/workflows/sbom.yml  # Software Bill of Materials generation
+    uses: ./.github/workflows/sbom.yml
 
   call-codeql:
-    uses: ./.github/workflows/codeql.yml  # Static analysis for vulnerabilities
+    uses: ./.github/workflows/codeql.yml
 
   call-build:
-    uses: ./.github/workflows/build.yml  # Runs the reusable build workflow
+    uses: ./.github/workflows/build.yml
+    # with:
+    #   environment: ${{ env.ENVIRONMENT }}
 
   reupload-artifact:
-    name: Re-upload Artifact from Build Pipeline
+    name: Prepare Build Artifact
     runs-on: ubuntu-latest
-    needs: call-build  # Ensures this runs only after the build job finishes.
-
+    needs: call-build
     steps:
-      - name: Download artifact from reusable workflow
-        uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: build-output-temp      # Must match upload name from build.yml
-          path: ./_site                    # Must match to keep paths consistent
-
-      - name: Re-upload artifact for deploy workflow_run visibility
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-output     # Re-uploads with the same name for staging workflow
+          name: build-artifact-temp
           path: ./_site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: ./_site
+          retention-days: 1
