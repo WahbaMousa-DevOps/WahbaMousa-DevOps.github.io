@@ -56,7 +56,7 @@ jobs:
         uses: actions/deploy-pages@v4
         id: deployment
       
-      - run: echo "Deployed to: ${{ steps.deployment.outputs.page_url }}"
+      - run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
 
 
     # steps: # only enough with workflow []

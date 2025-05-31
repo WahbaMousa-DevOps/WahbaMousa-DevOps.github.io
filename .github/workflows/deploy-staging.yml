@@ -2,7 +2,7 @@
 name: Deploy to Staging
 
 on:
-  workflow_dispatch: {} # Best practice For production use it only and remove workflow_run or add a manual approval step (like environment: { reviewers: [...] })
+  #workflow_dispatch: {} # Best practice For production use it only and remove workflow_run or add a manual approval step (like environment: { reviewers: [...] })
   workflow_run:
     workflows: ["CI Pipeline"]  # Match the name of the workflow that builds artifacts
     types:
