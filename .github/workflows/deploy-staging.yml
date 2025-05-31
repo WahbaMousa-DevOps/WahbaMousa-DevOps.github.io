@@ -23,7 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 1. Add CNAME early in source directory.
       - name: Add CNAME
         run: echo "staging.aiopsvision.com" > ./CNAME
 

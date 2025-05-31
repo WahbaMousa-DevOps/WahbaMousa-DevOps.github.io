@@ -1,6 +1,5 @@
 name: Enforce Dynamic Branch Protection Rules 
-# Branch protection is static in branch-protection.yml, and enforce-protection.yml with parse-and-apply.py is the dynamic workflow that applies any changes you make in static file.
-on: # works just push to same file names even if not on mai branch and also when open pr on main 
+on: 
   pull_request:
     branches: 
       - main
@@ -10,7 +9,7 @@ on: # works just push to same file names even if not on mai branch and also when
       - .github/scripts/parse-and-apply.py
 
 permissions:
-  contents: write  # Needed to update branch protection
+  contents: write  
   actions: read
 
 jobs:
