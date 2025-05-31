@@ -24,6 +24,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 1. Add CNAME early in source directory
+      - name: Add CNAME
+        run: echo "staging.aiopsvision.com" > ./CNAME
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -32,9 +36,6 @@ jobs:
         with:
           source: ./
           destination: ./_site
-
-      - name: Add CNAME
-        run: echo "staging.aiopsvision.com" > _site/CNAME
 
       - name: Upload to Pages
         uses: actions/upload-pages-artifact@v3
