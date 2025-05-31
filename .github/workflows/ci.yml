@@ -5,7 +5,7 @@ on:
     branches: [develop, release, main, 'feature/*', 'hotfix/*']
 
 env:
-  ENVIRONMENT: ${{ github.ref_name == 'release' && 'staging' || 'production' }}
+  ENVIRONMENT: ${{ contains('release develop', github.ref_name) && 'staging' || 'production' }}
 
 jobs:
   call-tests:
