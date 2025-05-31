@@ -3,7 +3,7 @@ name: Deploy to Staging
 
 on:
   workflow_dispatch: {} # Best practice For production use it only and remove workflow_run or add a manual approval step (like environment: { reviewers: [...] })
-  pull_request:  # replaced workflow_run with push to ensure same workflow scope
+  push:  # replaced workflow_run with push to ensure same workflow scope
     branches:
       - release
       - main  # only when merge pr on main not when open pr and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
@@ -37,7 +37,7 @@ jobs:
 
   deploy-staging:
   
-    #   if: ${{ always() }} .
+    #   if: ${{ always() }} 
     #   if: ${{ github.event.workflow_run.conclusion == 'success' }}
     if: success()
     needs: build-site
