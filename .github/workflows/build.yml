@@ -19,5 +19,4 @@ jobs:
         with:
           source: ./ # Source directory for Jekyll
           destination: ./_site # Output directory (build result goes here)
-        # env:
-        #   ENV_BASE_URL: ${{inputs.environment == 'staging'?'https://staging.aiopsvision.com':'https://wahba.aiopsvision.com'}}
+
