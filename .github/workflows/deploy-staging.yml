@@ -5,10 +5,7 @@ on:
     branches:
       - release
       - main
-  pull_request:
-    branches:
-      - release
-      - main
+
 permissions:
   pages: write
   id-token: write
