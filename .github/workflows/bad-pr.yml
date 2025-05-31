@@ -11,8 +11,7 @@ permissions:
 jobs:
   close-or-clean:
     if: |
-      github.event.pull_request.state == 'open' &&
-      (github.event.pull_request.body == '' || contains(github.event.pull_request.body, 'by deleting this comment block'))
+      github.repository_owner == 'WahbaMousa-DevOps' && github.event.pull_request.state == 'open' && github.event.pull_request.body == '' 
     runs-on: ubuntu-latest
 
     steps:
@@ -30,9 +29,12 @@ jobs:
               This pull request was automatically closed because it contains no description or matches a known invalid pattern.
 
   delete-temp-branch:
-    if: github.event.pull_request.merged == true &&
-        !startsWith(github.head_ref, 'main') &&
-        !startsWith(github.head_ref, 'develop')
+    if: github.repository_owner == 'WahbaMousa-DevOps' && github.event.pull_request.merged == true &&
+      (
+        (github.head_ref == 'release' && github.base_ref == 'main') ||
+        (startsWith(github.head_ref, 'feature/') && github.base_ref == 'develop') ||
+        (startsWith(github.head_ref, 'hotfix/') && github.base_ref == 'release')
+      )
     runs-on: ubuntu-latest
 
     steps:
