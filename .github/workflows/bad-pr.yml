@@ -6,7 +6,7 @@ on:
 
 permissions:
   pull-requests: write
-  contents: write  # Required to delete branches
+  contents: write  
 
 jobs:
   close-or-clean:

@@ -12,6 +12,5 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/jekyll-build-pages@v1
         with:
-          source: ./ # Source directory for Jekyll
-          destination: ./_site # Output directory (build result goes here)
-
+          source: ./ 
+          destination: ./_site 
