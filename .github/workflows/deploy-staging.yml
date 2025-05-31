@@ -18,7 +18,7 @@ permissions:
   id-token: write         # Enables generating OpenID Connect (OIDC) tokens for secure deployments (used by GitHub Pages and other OIDC-auth-enabled actions)
 
 concurrency:
-  group: "deploy-staging"        # Ensures only one deployment to staging runs at a time for this group (prevents race conditions)
+  group: "staging-deploy-${{ github.ref }}"       # Ensures only one deployment to staging runs at a time for this group (prevents race conditions)
   cancel-in-progress: false      # Do not cancel any currently running deployment — let it finish before new one starts
 
 
@@ -52,6 +52,7 @@ jobs:
           path: ./_site
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4  # will added to same prod workflow name this is github pages actions.
-        
+        id: deployment    
+
+      - run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"

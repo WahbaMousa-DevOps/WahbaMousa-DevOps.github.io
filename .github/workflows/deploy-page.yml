@@ -12,7 +12,7 @@ on:
   #repository_dispatch: {}  #  Allow the workflow to be triggered externally via API (e.g., from another repo or system using a webhook or GitHub API call).
 
 concurrency:
-  group: "pages-production"
+  group: "prod-deploy-${{ github.ref }}"
   cancel-in-progress: false
 
 permissions:
@@ -33,8 +33,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -55,8 +53,10 @@ jobs:
           path: ./_site
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
+        id: deployment
+      
+      - run: echo "Deployed to: ${{ steps.deployment.outputs.page_url }}"
 
 
     # steps: # only enough with workflow []
