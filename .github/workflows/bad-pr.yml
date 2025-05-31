@@ -6,7 +6,7 @@ on:
 
 permissions:
   pull-requests: write
-  contents: write  # Required to delete branches
+  contents: write  
 
 jobs:
   close-or-clean:
@@ -32,8 +32,7 @@ jobs:
   delete-temp-branch:
     if: github.event.pull_request.merged == true &&
         !startsWith(github.head_ref, 'main') &&
-        !startsWith(github.head_ref, 'develop') &&
-        !startsWith(github.head_ref, 'release')
+        !startsWith(github.head_ref, 'develop')
     runs-on: ubuntu-latest
 
     steps:
