@@ -19,8 +19,8 @@ jobs:
         with:
           source: ./ # Source directory for Jekyll
           destination: ./_site # Output directory (build result goes here)
-        env:
-          ENV_BASE_URL: ${{inputs.environment == 'staging'?'https://staging.aiopsvision.com':'https://wahba.aiopsvision.com'}}
+        # env:
+        #   ENV_BASE_URL: ${{inputs.environment == 'staging'?'https://staging.aiopsvision.com':'https://wahba.aiopsvision.com'}}
       - uses: actions/upload-artifact@v4
         with:
           name: build-artifact-temp
