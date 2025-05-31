@@ -3,7 +3,10 @@ name: Build Pipeline
 
 on:
   workflow_call:  # Makes this workflow callable from another workflow using 'uses:'
-
+    inputs:
+      environment:
+        required: true
+        type: string
 jobs:
   build:
     name: Build GitHub Pages Site
@@ -21,11 +24,16 @@ jobs:
         with:
           source: ./              # Source directory for Jekyll
           destination: ./_site    # Output directory (build result goes here)
-
+        env:
+          # Set base URL based on branch
+          ENV_BASE_URL: ${{ 
+            contains(github.ref, 'release') 
+              ? 'https://staging.aiopsvision.com' 
+              : 'https://wahba.aiopsvision.com' }}
+              
       - name: Upload Pages Artifact
-        uses: actions/upload-artifact@v3  # Upload artifact for later use (inside same workflow only)
+        uses: actions/upload-pages-artifact@v2
         with:
-          name: build-output-temp     # Custom name to avoid conflict when re-uploading later
           path: ./_site
 
 

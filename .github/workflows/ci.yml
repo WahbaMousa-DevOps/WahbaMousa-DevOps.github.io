@@ -23,21 +23,14 @@ jobs:
 
   call-build:
     uses: ./.github/workflows/build.yml  # Runs the reusable build workflow
+    with:
+      environment: ${{ github.ref_name == 'release' ? 'staging' : 'production' }}
 
-  reupload-artifact:
-    name: Re-upload Artifact from Build Pipeline
-    runs-on: ubuntu-latest
-    needs: call-build  # Ensures this runs only after the build job finishes.
-
-    steps:
-      - name: Download artifact from reusable workflow
-        uses: actions/download-artifact@v3
-        with:
-          name: build-output-temp      # Must match upload name from build.yml
-          path: ./_site                    # Must match to keep paths consistent
-
-      - name: Re-upload artifact for deploy workflow_run visibility
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-output      # Re-uploads with the same name for staging workflow
-          path: ./_site
+reupload-artifact:
+  steps:
+    - uses: actions/download-artifact@v4
+    - uses: actions/upload-artifact@v4
+      with:
+        name: build-output
+        path: ./_site
+        retention-days: 1  # Add retention
