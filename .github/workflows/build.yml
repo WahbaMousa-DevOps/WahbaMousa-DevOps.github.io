@@ -23,38 +23,6 @@ jobs:
         #   ENV_BASE_URL: ${{inputs.environment == 'staging'?'https://staging.aiopsvision.com':'https://wahba.aiopsvision.com'}}
       - uses: actions/upload-artifact@v4
         with:
-          name: build-artifact-temp
+          name: build-artifact-temp1
           path: ./_site
        
-
-  # test:
-  #   name: Run Unit Tests
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Run Tests
-  #       run: echo "Running unit tests"
-
-  # lint:
-  #   name: Lint Code
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Lint Code
-  #       run: echo "Linting code"
-
-  # trivy:
-  #   name: Scan with Trivy
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Run Trivy Scanner
-  #       uses: aquasecurity/trivy-action@master
-
-  # sbom:
-  #   name: Generate CycloneDX SBOM
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Generate SBOM
-  #       run: echo "Generating SBOM"

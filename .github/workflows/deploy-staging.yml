@@ -38,7 +38,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-output
+          name: build-output-temp2
           path: ./_site  # correct key: path (not source/destination)
       - name: Set Staging CNAME
         run: echo "staging.aiopsvision.com" > _site/CNAME
