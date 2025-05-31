@@ -23,6 +23,6 @@ jobs:
         #   ENV_BASE_URL: ${{inputs.environment == 'staging'?'https://staging.aiopsvision.com':'https://wahba.aiopsvision.com'}}
       - uses: actions/upload-artifact@v4
         with:
-          name: build-artifact-temp1
+          name: build-artifact-temp
           path: ./_site
        
