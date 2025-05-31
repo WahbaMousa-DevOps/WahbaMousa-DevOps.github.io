@@ -4,7 +4,6 @@ on: # works just push to same file names even if not on mai branch and also when
   pull_request:
     branches: 
       - main
-      - release 
   push:
     paths:
       - .github/branch-protection.yml

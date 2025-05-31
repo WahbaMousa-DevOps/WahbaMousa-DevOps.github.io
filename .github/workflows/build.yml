@@ -1,61 +1,17 @@
-# Build Pipeline (Reusable Workflow)
 name: Build Pipeline
 
 on:
-  workflow_call:  # Called from other workflows via 'workflow_call'
-
+  workflow_call:
 jobs:
   build:
-    name: Build GitHub Pages Site
+    name: Build Site
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+      - uses: actions/checkout@v4
+      - run: rm -rf _site || true
+      - uses: actions/configure-pages@v5
+      - uses: actions/jekyll-build-pages@v1
         with:
-          source: ./
-          destination: ./_site
-
-      - name: Upload Pages Artifact
-        uses: actions/upload-artifact@v4  # Use artifact upload for later deploys
-        with:
-          name: build-output
-          path: ./_site
-
-  # test:
-  #   name: Run Unit Tests
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Run Tests
-  #       run: echo "Running unit tests"
-
-  # lint:
-  #   name: Lint Code
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Lint Code
-  #       run: echo "Linting code"
-
-  # trivy:
-  #   name: Scan with Trivy
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Run Trivy Scanner
-  #       uses: aquasecurity/trivy-action@master
-
-  # sbom:
-  #   name: Generate CycloneDX SBOM
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Generate SBOM
-  #       run: echo "Generating SBOM"
+          source: ./ # Source directory for Jekyll
+          destination: ./_site # Output directory (build result goes here)
+      
