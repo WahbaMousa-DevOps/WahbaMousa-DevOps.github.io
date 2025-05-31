@@ -32,8 +32,7 @@ jobs:
   delete-temp-branch:
     if: github.event.pull_request.merged == true &&
         !startsWith(github.head_ref, 'main') &&
-        !startsWith(github.head_ref, 'develop') &&
-        !startsWith(github.head_ref, 'release')
+        !startsWith(github.head_ref, 'develop')
     runs-on: ubuntu-latest
 
     steps:
