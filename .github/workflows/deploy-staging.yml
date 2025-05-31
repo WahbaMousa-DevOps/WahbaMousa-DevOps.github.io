@@ -1,57 +1,47 @@
-# Deploy to Staging
 name: Deploy to Staging
 
 on:
-  workflow_dispatch: {} # Best practice For production use it only and remove workflow_run or add a manual approval step (like environment: { reviewers: [...] })
-  push:  # replaced workflow_run with push to ensure same workflow scope
+  push:
     branches:
       - release
-      - main  # only when merge pr on main not when open pr and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
-  # workflow_run:
-  #   workflows: ["CI Pipeline"]  # Match the name of the workflow that builds artifacts
-  #   types:
-  #     - completed
-  #   branches:  # only when merge pr on main not when open pr and if use separate branch from main mention here also mention this branch in branch protection, to make sure that next step on prod 100%.
-  #     - release
+      - main
+
 permissions:
-  actions: read
-  contents: read          # Allows reading repository contents (needed for actions like checkout)
-  pages: write            # Grants permission to deploy to GitHub Pages (required by deploy-pages@v4)
-  id-token: write         # Enables generating OpenID Connect (OIDC) tokens for secure deployments (used by GitHub Pages and other OIDC-auth-enabled actions)
+  pages: write
+  id-token: write
 
 concurrency:
-  group: "staging-deploy-${{ github.ref }}"       # Ensures only one deployment to staging runs at a time for this group (prevents race conditions)
-  cancel-in-progress: false      # Do not cancel any currently running deployment — let it finish before new one starts
+  group: "staging-deploy-${{ github.ref }}"
+  cancel-in-progress: false
 
 jobs:
-  build-site:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: rm -rf _site || true
-      - uses: actions/configure-pages@v5
-      - uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./
-          destination: ./_site
-
-  deploy-staging:
-  
-    #   if: ${{ always() }} 
-    #   if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    if: success()
-    needs: build-site
+  build-and-deploy:
     runs-on: ubuntu-latest
     environment:
       name: staging
       url: https://staging.aiopsvision.com
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "staging.aiopsvision.com" > _site/CNAME
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
         with:
-          path: ./_site
-      - uses: actions/deploy-pages@v4
+          source: ./
+          destination: ./_site
+
+      - name: Add CNAME
+        run: echo "staging.aiopsvision.com" > _site/CNAME
+
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy to Pages
+        uses: actions/deploy-pages@v4
         id: deployment
-      - run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+
+      - name: Show deployment URL
+        run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
