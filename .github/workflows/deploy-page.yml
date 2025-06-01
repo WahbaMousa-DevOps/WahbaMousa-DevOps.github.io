@@ -1,71 +1,120 @@
+# name: Deploy to Production
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       staging-run-id:
+#         description: 'Run ID of successful staging deployment'
+#         required: true
+#         type: number
+#   workflow_run:
+#     workflows: ["Deploy to Staging"]
+#     types: [completed]
+#     branches: [main]
+
+# concurrency:
+#   group: "production-deploy"
+#   cancel-in-progress: true
+
+# permissions:
+#   pages: write
+#   id-token: write
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: production
+#       url: https://wahba.aiopsvision.com
+#     steps:
+#       # Get staging run ID for artifact download
+#       - name: Get staging run ID
+#         id: run-id
+#         run: |
+#           RUN_ID=${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || github.event.inputs.staging-run-id }}
+#           echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
+#           echo "Using staging run ID: $RUN_ID"
+#       - name: Add Production CNAME
+#         run: |
+#           mkdir -p ./_site
+#           echo "wahba.aiopsvision.com" > ./_site/CNAME
+
+#       - name: Check artifact availability
+#         run: |
+#           ls -l ./_site || (echo "Artifact missing!" && exit 1)
+
+#       - name: Download Staging Artifact
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: github-pages
+#           path: ./_site
+#           workflow_run: ${{ steps.run-id.outputs.run_id }}
+
+#       - name: Setup Pages
+#         uses: actions/configure-pages@v5
+
+#       # Production deployment
+#       - name: Deploy to Production
+#         uses: actions/deploy-pages@v4
+#         id: deployment
+
+#       # Verification and output
+#       - name: Show URL
+#         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+        
+#       - name: Smoke Test Production
+#         run: |
+#           # Verify critical functionality
+#           curl -sSfL ${{ steps.deployment.outputs.page_url }}/health-check | grep '"status":"ok"' || exit 1
+#           # Verify homepage loads
+#           curl -sSfL ${{ steps.deployment.outputs.page_url }} | grep '<title>AI Ops Vision' || exit 1
+#           echo "Production smoke tests passed!"
+
+
 name: Deploy to Production
 
 on:
-  workflow_dispatch:
-    inputs:
-      staging-run-id:
-        description: 'Run ID of successful staging deployment'
-        required: true
-        type: number
-  workflow_run:
-    workflows: ["Deploy to Staging"]
-    types: [completed]
-    branches: [main]
-
-concurrency:
-  group: "production-deploy"
-  cancel-in-progress: true
+  push:
+    branches:
+      - release
+  workflow_dispatch: {}
 
 permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "production-deploy-${{ github.ref }}"
+  cancel-in-progress: false
+
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     environment:
       name: production
       url: https://wahba.aiopsvision.com
     steps:
-      # Get staging run ID for artifact download
-      - name: Get staging run ID
-        id: run-id
-        run: |
-          RUN_ID=${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || github.event.inputs.staging-run-id }}
-          echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
-          echo "Using staging run ID: $RUN_ID"
-      - name: Add Production CNAME
-        run: |
-          mkdir -p ./_site
-          echo "wahba.aiopsvision.com" > ./_site/CNAME
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Check artifact availability
-        run: |
-          ls -l ./_site || (echo "Artifact missing!" && exit 1)
-
-      - name: Download Staging Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: ./_site
-          workflow_run: ${{ steps.run-id.outputs.run_id }}
+      - name: Add CNAME
+        run: echo "wahba.aiopsvision.com" > ./CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Production deployment
-      - name: Deploy to Production
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy to Pages
         uses: actions/deploy-pages@v4
         id: deployment
 
-      # Verification and output
-      - name: Show URL
+      - name: Show deployment URL
         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
-        
-      - name: Smoke Test Production
-        run: |
-          # Verify critical functionality
-          curl -sSfL ${{ steps.deployment.outputs.page_url }}/health-check | grep '"status":"ok"' || exit 1
-          # Verify homepage loads
-          curl -sSfL ${{ steps.deployment.outputs.page_url }} | grep '<title>AI Ops Vision' || exit 1
-          echo "Production smoke tests passed!"
