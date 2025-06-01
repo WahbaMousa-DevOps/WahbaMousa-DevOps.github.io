@@ -1,35 +1,89 @@
+# name: Deploy to Production
+
+# on:
+#   workflow_dispatch: {}  
+#   push:
+#     branches:
+#       - main
+ 
+# concurrency:
+#   group: "prod-deploy-${{ github.ref }}"
+#   cancel-in-progress: false
+
+# permissions:
+#   pages: write
+#   id-token: write
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: production
+#       url: https://wahba.aiopsvision.com
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       # - name: Cache Jekyll gems
+#       #   uses: actions/cache@v4
+#       #   with:
+#       #     path: vendor/bundle
+#       #     key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+#       #     restore-keys: ${{ runner.os }}-gems-
+
+#       - name: Add Production CNAME
+#         run: echo "wahba.aiopsvision.com" > ./CNAME
+
+#       - name: Setup Pages
+#         uses: actions/configure-pages@v5
+
+#       - name: Build with Jekyll
+#         uses: actions/jekyll-build-pages@v1
+#         with:
+#           source: ./
+#           destination: ./_site
+
+#       - name: Upload Pages Artifact
+#         uses: actions/upload-pages-artifact@v3
+
+#       - name: Deploy to GitHub Pages
+#         uses: actions/deploy-pages@v4
+#         id: deployment
+      
+#       - name: Verify deployment
+#         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+
+              # use next of depend on build artifact:
 name: Deploy to Production
 
 on:
-  workflow_dispatch: {}  
   push:
     branches:
       - main
- 
+  workflow_run:
+    workflows: ["Deploy to Staging"]
+    types: [completed]
+
 concurrency:
-  group: "prod-deploy-${{ github.ref }}"
-  cancel-in-progress: false
+  group: "prod-deploy"
+  cancel-in-progress: true
 
 permissions:
   pages: write
   id-token: write
 
 jobs:
-  build-and-deploy:
+  deploy:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     environment:
       name: production
       url: https://wahba.aiopsvision.com
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # - name: Cache Jekyll gems
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: vendor/bundle
-      #     key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-      #     restore-keys: ${{ runner.os }}-gems-
+      - name: Download Pages Artifact
+        uses: actions/download-pages-artifact@v3
 
       - name: Add Production CNAME
         run: echo "wahba.aiopsvision.com" > ./CNAME
@@ -37,18 +91,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./
-          destination: ./_site
-
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
-
-      - name: Deploy to GitHub Pages
+      - name: Deploy to Production
         uses: actions/deploy-pages@v4
         id: deployment
-      
-      - name: Verify deployment
+
+      - name: Show URL
         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"

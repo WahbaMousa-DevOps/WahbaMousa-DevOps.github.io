@@ -7,10 +7,21 @@ jobs:
     name: Build Site
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: rm -rf _site || true
-      - uses: actions/configure-pages@v5
-      - uses: actions/jekyll-build-pages@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Clean Existing Site Directory
+        run: rm -rf _site || true
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build Jekyll Site
+        uses: actions/jekyll-build-pages@v1
         with:
-          source: ./ 
-          destination: ./_site 
+          source: ./
+          destination: ./_site
+
+# if Deploy stage depend on build artifact use next:
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
