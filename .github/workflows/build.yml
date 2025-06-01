@@ -10,7 +10,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Clean Site Output (Optional)
+      - name: Clean Site Output 
         run: |
           if [ -d "_site" ]; then
             rm -rf _site
@@ -29,7 +29,7 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: pages-${{ github.ref_name }}
+          name: pages-${{ github.head_ref }}
           path: ./_site
 
     
