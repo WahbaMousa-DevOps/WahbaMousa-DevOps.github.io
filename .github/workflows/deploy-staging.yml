@@ -49,44 +49,117 @@
 
 
 
-        # use next of depend on build artifact:
-        name: Deploy to Staging
+# use next of depend on build artifact:
+# name:  Staging deploy
+# on:
+#   pull_request:
+#     branches:
+#       - release
+#   push:
+#     branches:
+#       - release
+#   workflow_run:
+#     workflows: ["CI Pipeline"]
+#     types: [completed]
 
-        on:
-          workflow_run:
-            workflows: ["CI Pipeline"]
-            types: [completed]
+# concurrency:
+#   group: "staging-deploy-${{ github.event.workflow_run.head_branch }}"
+#   cancel-in-progress: true
 
-        concurrency:
-          group: "staging-deploy"
-          cancel-in-progress: true
+# permissions:
+#   pages: write
+#   id-token: write
 
-        permissions:
-          pages: write
-          id-token: write
+# jobs:
+#   deploy:
+#     if: > 
+#       (github.event_name == 'workflow_run' && 
+#        github.event.workflow_run.conclusion == 'success' && 
+#        github.event.workflow_run.head_branch == 'release')
+# # here success on push not pr or last stage ci pipeline also package. 
+#     runs-on: ubuntu-latest
+#     # environment:
+#     #   name: staging
+#     #   url: https://staging.aiopsvision.com
+#     steps:
+#       - name: Download GitHub Pages Artifact
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: github-pages
+#           path: ./_site
 
-        jobs:
-          deploy:
-            if: >
-              github.event.workflow_run.conclusion == 'success' &&
-              github.event.workflow_run.head_branch == 'release'
-            runs-on: ubuntu-latest
-            environment:
-              name: staging
-              url: https://staging.aiopsvision.com
-            steps:
-              - name: Download Pages Artifact
-                uses: actions/download-pages-artifact@v3
+#       - name: Add Staging CNAME
+#         run: |
+#           mkdir -p ./_site
+#           echo "staging.aiopsvision.com" > ./_site/CNAME
 
-              - name: Add Staging CNAME
-                run: echo "staging.aiopsvision.com" > ./CNAME
+#       - name: Setup Pages
+#         uses: actions/configure-pages@v5
 
-              - name: Setup Pages
-                uses: actions/configure-pages@v5
+#       - name: Deploy into Staging
+#         uses: actions/deploy-pages@v4
+#         id: deployment
 
-              - name: Deploy to Staging
-                uses: actions/deploy-pages@v4
-                id: deployment
+#       - name: Show URL
+#         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
 
-              - name: Show URL
-                run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+
+name: Staging Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    branches: [release]
+    types: 
+      - completed
+
+concurrency:
+  group: "staging-deploy"
+  cancel-in-progress: true
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: staging
+      url: https://staging.aiopsvision.com
+    
+    steps:
+      # Get CI Pipeline run ID
+      - name: Get Workflow Run ID
+        id: get-run-id
+        run: |
+          echo "run_id=${{ github.event.workflow_run.id }}" >> $GITHUB_OUTPUT
+      
+      # Download artifact from CI Pipeline
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./_site
+          workflow_run: ${{ steps.get-run-id.outputs.run_id }}
+      
+      - name: Add Staging CNAME
+        run: |
+          mkdir -p ./_site  
+          echo "staging.aiopsvision.com" > ./_site/CNAME
+        
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        
+      - name: Deploy to Pages
+        uses: actions/deploy-pages@v4
+        id: deployment
+        
+      - name: Show URL
+        run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+
+      - name: Smoke Test Staging
+        run: |
+          # Basic availability check
+          curl -sSfL ${{ steps.deployment.outputs.page_url }} > /dev/null || exit 1
+          echo "Staging site is accessible!"
