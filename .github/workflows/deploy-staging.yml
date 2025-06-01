@@ -135,6 +135,11 @@ jobs:
         run: |
           echo "run_id=${{ github.event.workflow_run.id }}" >> $GITHUB_OUTPUT
 
+      - name: Add Staging CNAME
+        run: |
+          mkdir -p ./_site  
+          echo "staging.aiopsvision.com" > ./_site/CNAME
+          
       - name: Check artifact availability
         run: |
           ls -l ./_site || (echo "Artifact missing!" && exit 1)
@@ -144,12 +149,7 @@ jobs:
         with:
           name: github-pages
           path: ./_site
-          workflow_run: ${{ steps.get-run-id.outputs.run_id }}
-      
-      - name: Add Staging CNAME
-        run: |
-          mkdir -p ./_site  
-          echo "staging.aiopsvision.com" > ./_site/CNAME
+          workflow_run: ${{ steps.get-run-id.outputs.run_id }} 
         
       - name: Configure Pages
         uses: actions/configure-pages@v5
