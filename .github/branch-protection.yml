@@ -21,10 +21,10 @@ branches:
       required_pull_request_reviews:
         required_approving_review_count: 1
         dismiss_stale_reviews: true
-        # require_code_owner_reviews: true
-        # bypass_pull_request_allowances: 
-        #     users:
-        #       - WahbaMousa-DevOps
+        require_code_owner_reviews: true
+        bypass_pull_request_allowances: 
+            users:
+              - WahbaMousa-DevOps
       # Admin and push rules
       enforce_admins: true  # Apply rules to admins too 
       restrictions:
