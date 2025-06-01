@@ -18,12 +18,7 @@ protection_rules:
     strict: true  # Require branches to be up-to-date
     contexts:
       # CI Pipeline checks only
-      - "build"                    # From CI Pipeline
-      - "call-tests"              # From CI Pipeline  
-      - "call-lint"               # From CI Pipeline
-      - "call-trivy"              # From CI Pipeline
-      - "call-sbom"               # From CI Pipeline
-      - "call-codeql"             # From CI Pipeline
+      - "CI Pipeline"                    # From CI Pipeline
 
   # Additional protections
   enforce_admins: true            # Apply to admins too
@@ -51,12 +46,7 @@ protection_rules:
   required_status_checks:
     strict: true
     contexts:
-      - "build"
-      - "call-tests"
-      - "call-lint"
-      - "call-trivy"
-      - "call-sbom"
-      - "call-codeql"
+      - "CI Pipeline" 
 
   enforce_admins: false
   allow_force_pushes: false
