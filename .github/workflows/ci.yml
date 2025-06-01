@@ -88,6 +88,7 @@ jobs:
           name: github-pages
           path: ./_site
           retention-days: 1  # Keep artifact short-term
+          if-no-files-found: error
         # Set output to confirm artifact upload
       - name: Set artifact flag  
         run: echo "artifact_available=true" >> $GITHUB_OUTPUT
