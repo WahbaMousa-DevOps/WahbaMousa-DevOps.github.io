@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./_site
-          
+
   call-tests:
     uses: ./.github/workflows/test.yml
 
@@ -48,7 +48,5 @@ jobs:
   call-codeql:
     uses: ./.github/workflows/codeql.yml
 
-  call-build:
-    uses: ./.github/workflows/build.yml
 
 
