@@ -28,5 +28,8 @@ jobs:
 # if Deploy stage depend on build artifact use next:
       - name: Upload Pages Artifact
         uses: actions/upload-artifact@v4
+        with:
+          name: pages-${{ github.ref_name }}
+          path: ./_site
 
     
