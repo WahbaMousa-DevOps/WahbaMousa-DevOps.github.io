@@ -58,6 +58,10 @@ on:
     branches: [release]
   push:
     branches: [release, develop, 'feature/*', 'hotfix/*']
+    
+concurrency:
+  group: "Bulding Stage"
+  cancel-in-progress: true
 
 jobs:
   build:
