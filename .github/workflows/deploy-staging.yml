@@ -1,9 +1,8 @@
-name: Deploy to Staging
+name: Deploy to Pages
 
 on:
   push:
-    branches:
-      - release
+    branches: [main, release]
   workflow_dispatch: {}
 
 permissions:
@@ -11,21 +10,34 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "staging-deploy-${{ github.ref }}"
+  group: "pages-deploy-${{ github.ref }}"
   cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment:
-      name: staging
-      url: https://staging.aiopsvision.com
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Determine environment
+        id: env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "env_name=production" >> $GITHUB_OUTPUT
+            echo "cname=wahba.aiopsvision.com" >> $GITHUB_OUTPUT
+            echo "base_path=" >> $GITHUB_OUTPUT
+          else
+            echo "env_name=staging" >> $GITHUB_OUTPUT
+            echo "cname=staging.aiopsvision.com" >> $GITHUB_OUTPUT
+            echo "base_path=/staging" >> $GITHUB_OUTPUT
+          fi
+
       - name: Add CNAME
-        run: echo "staging.aiopsvision.com" > ./CNAME
+        run: echo "${{ steps.env.outputs.cname }}" > ./CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -44,128 +56,4 @@ jobs:
         id: deployment
 
       - name: Show deployment URL
-        run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
-
-
-
-
-# use next of depend on build artifact:
-# name:  Staging deploy
-# on:
-#   pull_request:
-#     branches:
-#       - release
-#   push:
-#     branches:
-#       - release
-#   workflow_run:
-#     workflows: ["CI Pipeline"]
-#     types: [completed]
-
-# concurrency:
-#   group: "staging-deploy-${{ github.event.workflow_run.head_branch }}"
-#   cancel-in-progress: true
-
-# permissions:
-#   pages: write
-#   id-token: write
-
-# jobs:
-#   deploy:
-#     if: > 
-#       (github.event_name == 'workflow_run' && 
-#        github.event.workflow_run.conclusion == 'success' && 
-#        github.event.workflow_run.head_branch == 'release')
-# # here success on push not pr or last stage ci pipeline also package. 
-#     runs-on: ubuntu-latest
-#     # environment:
-#     #   name: staging
-#     #   url: https://staging.aiopsvision.com
-#     steps:
-#       - name: Download GitHub Pages Artifact
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: github-pages
-#           path: ./_site
-
-#       - name: Add Staging CNAME
-#         run: |
-#           mkdir -p ./_site
-#           echo "staging.aiopsvision.com" > ./_site/CNAME
-
-#       - name: Setup Pages
-#         uses: actions/configure-pages@v5
-
-#       - name: Deploy into Staging
-#         uses: actions/deploy-pages@v4
-#         id: deployment
-
-#       - name: Show URL
-#         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
-
-
-# name: Staging Deploy
-
-# on:
-#   push:
-#     branches:
-#       - release
-#   workflow_run:
-#     workflows: ["CI Pipeline"]
-#     branches: [release]
-#     types: 
-#       - completed
-
-# concurrency:
-#   group: "staging-deploy"
-#   cancel-in-progress: true
-
-# permissions:
-#   pages: write
-#   id-token: write
-
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     environment: 
-#       name: staging
-#       url: https://staging.aiopsvision.com
-    
-#     steps:
-#       # Get CI Pipeline run ID
-#       - name: Get Workflow Run ID
-#         id: get-run-id
-#         run: |
-#           echo "run_id=${{ github.event.workflow_run.id }}" >> $GITHUB_OUTPUT
-
-#       - name: Add Staging CNAME
-#         run: |
-#           mkdir -p ./_site  
-#           echo "staging.aiopsvision.com" > ./_site/CNAME
-
-#       - name: Check artifact availability
-#         run: |
-#           ls -l ./_site || (echo "Artifact missing!" && exit 1)
-
-#       - name: Download Build Artifact
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: github-pages
-#           path: ./_site
-#           workflow_run: ${{ steps.get-run-id.outputs.run_id }} 
-        
-#       - name: Configure Pages
-#         uses: actions/configure-pages@v5
-        
-#       - name: Deploy to Pages
-#         uses: actions/deploy-pages@v4
-#         id: deployment
-        
-#       - name: Show URL
-#         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
-
-#       - name: Smoke Test Staging
-#         run: |
-#           # Basic availability check
-#           curl -sSfL ${{ steps.deployment.outputs.page_url }} > /dev/null || exit 1
-#           echo "Staging site is accessible!"
+        run: echo "Deployed ${{ steps.env.outputs.env_name }} to:${{ steps.deployment.outputs.page_url }}"
