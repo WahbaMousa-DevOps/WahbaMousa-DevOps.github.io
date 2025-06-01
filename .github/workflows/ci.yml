@@ -15,11 +15,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Clean Site Output 
-        run: |
-          if [ -d "_site" ]; then
-            rm -rf _site
-          fi
+      # - name: Clean Site Output 
+      #   run: |
+      #     if [ -d "_site" ]; then
+      #       rm -rf _site
+      #     fi
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
