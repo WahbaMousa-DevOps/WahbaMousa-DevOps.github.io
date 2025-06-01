@@ -77,6 +77,8 @@
             steps:
               - name: Download Pages Artifact
                 uses: actions/download-pages-artifact@v3
+                with:
+                  name: pages-main
 
               - name: Add Staging CNAME
                 run: echo "staging.aiopsvision.com" > ./CNAME
