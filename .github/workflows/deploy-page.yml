@@ -34,10 +34,14 @@ jobs:
           RUN_ID=${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || github.event.inputs.staging-run-id }}
           echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
           echo "Using staging run ID: $RUN_ID"
+      - name: Add Production CNAME
+        run: |
+          mkdir -p ./_site
+          echo "wahba.aiopsvision.com" > ./_site/CNAME
 
-      # - name: Check artifact availability
-      #   run: |
-      #     ls -l ./_site || (echo "Artifact missing!" && exit 1)
+      - name: Check artifact availability
+        run: |
+          ls -l ./_site || (echo "Artifact missing!" && exit 1)
 
       - name: Download Staging Artifact
         uses: actions/download-artifact@v4
@@ -45,12 +49,6 @@ jobs:
           name: github-pages
           path: ./_site
           workflow_run: ${{ steps.run-id.outputs.run_id }}
-
-      # Prepare production deployment
-      - name: Add Production CNAME
-        run: |
-          mkdir -p ./_site
-          echo "wahba.aiopsvision.com" > ./_site/CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -64,10 +62,10 @@ jobs:
       - name: Show URL
         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
         
-      # - name: Smoke Test Production
-      #   run: |
-      #     # Verify critical functionality
-      #     curl -sSfL ${{ steps.deployment.outputs.page_url }}/health-check | grep '"status":"ok"' || exit 1
-      #     # Verify homepage loads
-      #     curl -sSfL ${{ steps.deployment.outputs.page_url }} | grep '<title>AI Ops Vision' || exit 1
-      #     echo "Production smoke tests passed!"
+      - name: Smoke Test Production
+        run: |
+          # Verify critical functionality
+          curl -sSfL ${{ steps.deployment.outputs.page_url }}/health-check | grep '"status":"ok"' || exit 1
+          # Verify homepage loads
+          curl -sSfL ${{ steps.deployment.outputs.page_url }} | grep '<title>AI Ops Vision' || exit 1
+          echo "Production smoke tests passed!"
