@@ -69,10 +69,10 @@ concurrency:
 
 jobs:
   deploy:
-    if: > 
-      (github.event_name == 'workflow_run' && 
-       github.event.workflow_run.conclusion == 'success' && 
-       github.event.workflow_run.head_branch == 'release')
+    # if: > 
+    #   (github.event_name == 'workflow_run' && 
+    #    github.event.workflow_run.conclusion == 'success' && 
+    #    github.event.workflow_run.head_branch == 'release')
 # here success on push not pr or last stage ci pipeline also package. 
     runs-on: ubuntu-latest
     environment:
