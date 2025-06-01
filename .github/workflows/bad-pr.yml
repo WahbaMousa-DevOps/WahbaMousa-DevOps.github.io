@@ -2,16 +2,19 @@ name: Cleanup Bad PRs
 
 on:
   pull_request:
-    types: [opened, reopened, closed]
+    types: [closed]
 
 permissions:
   pull-requests: write
-  contents: write  
+  contents: write
 
 jobs:
   close-or-clean:
-    if: |
-      github.repository_owner == 'WahbaMousa-DevOps' && github.event.pull_request.state == 'open' && github.event.pull_request.body == '' 
+    if: >
+      github.repository_owner == 'WahbaMousa-DevOps' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.body == ''
     runs-on: ubuntu-latest
 
     steps:
@@ -26,10 +29,12 @@ jobs:
         uses: superbrothers/close-pull-request@v3
         with:
           comment: |
-              This pull request was automatically closed because it contains no description or matches a known invalid pattern.
+            ❌ This PR was automatically closed after being merged with no description. Please ensure all PRs have proper documentation and purpose.
 
   delete-temp-branch:
-    if: github.repository_owner == 'WahbaMousa-DevOps' && github.event.pull_request.merged == true &&
+    if: >
+      github.repository_owner == 'WahbaMousa-DevOps' &&
+      github.event.pull_request.merged == true &&
       (
         (github.head_ref == 'release' && github.base_ref == 'main') ||
         (startsWith(github.head_ref, 'feature/') && github.base_ref == 'develop') ||
