@@ -29,4 +29,5 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: pages-${{ github.ref_name }}
+          name: build-package
+          path: ./_site
