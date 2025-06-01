@@ -85,7 +85,9 @@ jobs:
           path: ./_site
 
       - name: Add Staging CNAME
-        run: echo "staging.aiopsvision.com" > ./_site/CNAME
+        run: |
+          mkdir -p ./_site
+          echo "staging.aiopsvision.com" > ./_site/CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
