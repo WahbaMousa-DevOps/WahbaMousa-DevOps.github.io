@@ -22,7 +22,6 @@ jobs:
       - name: Build Jekyll Site
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./
           destination: ./_site
 
 # if Deploy stage depend on build artifact use next:
