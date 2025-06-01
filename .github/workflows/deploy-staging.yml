@@ -57,9 +57,9 @@ on:
     workflows: ["CI Pipeline"]
     types: [completed]
 
-concurrency:
-  group: "staging-deploy"
-  cancel-in-progress: true
+# concurrency:
+#   group: "staging-deploy-${{ github.event.workflow_run.head_branch }}"
+#   cancel-in-progress: true
 
 permissions:
   pages: write
