@@ -1,9 +1,8 @@
-name: Deploy to Staging
+name: Deploy to Pages
 
 on:
   push:
-    branches:
-      - release
+    branches: [main, release]
   workflow_dispatch: {}
 
 permissions:
@@ -11,21 +10,34 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "staging-deploy"
+  group: "pages-deploy-${{ github.ref }}"
   cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment:
-      name: staging
-      url: https://staging.aiopsvision.com
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Determine environment
+        id: env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "env_name=production" >> $GITHUB_OUTPUT
+            echo "cname=wahba.aiopsvision.com" >> $GITHUB_OUTPUT
+            echo "base_path=" >> $GITHUB_OUTPUT
+          else
+            echo "env_name=staging" >> $GITHUB_OUTPUT
+            echo "cname=staging.aiopsvision.com" >> $GITHUB_OUTPUT
+            echo "base_path=/staging" >> $GITHUB_OUTPUT
+          fi
+
       - name: Add CNAME
-        run: echo "staging.aiopsvision.com" > ./CNAME
+        run: echo "${{ steps.env.outputs.cname }}" > ./CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -36,14 +48,12 @@ jobs:
           source: ./
           destination: ./_site
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          path: ./_site
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
 
-      - name: Deploy to Staging
+      - name: Deploy to Pages
         uses: actions/deploy-pages@v4
         id: deployment
 
       - name: Show deployment URL
-        run: echo "Deployed to staging:${{ steps.deployment.outputs.page_url }}"
+        run: echo "Deployed ${{ steps.env.outputs.env_name }} to:${{ steps.deployment.outputs.page_url }}"
