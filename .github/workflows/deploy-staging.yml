@@ -145,7 +145,7 @@ jobs:
       
       - name: Add Staging CNAME
         run: |
-          mkdir -p ./_site  # Ensure directory exists
+          mkdir -p ./_site  
           echo "staging.aiopsvision.com" > ./_site/CNAME
         
       - name: Configure Pages
