@@ -85,7 +85,7 @@ jobs:
       - name: Download Pages Artifact
         uses: actions/download-pages-artifact@v3
         with:
-         name: pages-release
+         name: pages-main
 
       - name: Add Production CNAME
         run: echo "wahba.aiopsvision.com" > ./CNAME
