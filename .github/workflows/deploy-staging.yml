@@ -82,6 +82,7 @@ jobs:
       - name: Download GitHub Pages Artifact
         uses: actions/download-artifact@v4
         with:
+          name: github-pages
           path: ./_site
 
       - name: Add Staging CNAME
