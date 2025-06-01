@@ -33,9 +33,7 @@ protection_rules:
     users: ["WahbaMousa-DevOps"]  # Only you can push directly
     teams: []
     apps: []
-
 ---
-
 # Release Branch Protection  
 name: release
 protection_rules:
