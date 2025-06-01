@@ -54,10 +54,14 @@
 
 
 on:
-  pull_request:  # UNCOMMENTED
+  pull_request:
     branches: [release]
   push:
     branches: [release, develop, 'feature/*', 'hotfix/*']
+
+concurrency:
+  group: "Building Stage-${{ github.event.pull_request.number || github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -87,9 +91,11 @@ jobs:
         with:
           name: github-pages
           path: ./_site
-          retention-days: 1  # Keep artifact short-term
-        # Set output to confirm artifact upload
-          run: echo "artifact_available=true" >> $GITHUB_OUTPUT
+          retention-days: 1  
+          if-no-files-found: error
+        
+      - name: Set artifact flag  
+        run: echo "artifact_available=true" >> $GITHUB_OUTPUT
 
   call-tests:
     uses: ./.github/workflows/test.yml
