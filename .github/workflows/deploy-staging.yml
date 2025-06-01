@@ -1,47 +1,92 @@
-name: Deploy to Staging
+# name: Deploy to Staging
 
-on:
-  push:
-    branches:
-      - release
-  workflow_dispatch: {}
+# on:
+#   push:
+#     branches:
+#       - release
+#   workflow_dispatch: {}
 
-permissions:
-  pages: write
-  id-token: write
+# permissions:
+#   pages: write
+#   id-token: write
 
-concurrency:
-  group: "staging-deploy-${{ github.ref }}"
-  cancel-in-progress: false
+# concurrency:
+#   group: "staging-deploy-${{ github.ref }}"
+#   cancel-in-progress: false
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: https://staging.aiopsvision.com
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: staging
+#       url: https://staging.aiopsvision.com
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      - name: Add CNAME
-        run: echo "staging.aiopsvision.com" > ./CNAME
+#       - name: Add CNAME
+#         run: echo "staging.aiopsvision.com" > ./CNAME
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+#       - name: Setup Pages
+#         uses: actions/configure-pages@v5
 
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./
-          destination: ./_site
+#       - name: Build with Jekyll
+#         uses: actions/jekyll-build-pages@v1
+#         with:
+#           source: ./
+#           destination: ./_site
 
-      - name: Upload to Pages
-        uses: actions/upload-pages-artifact@v3
+#       - name: Upload to Pages
+#         uses: actions/upload-pages-artifact@v3
 
-      - name: Deploy to Pages
-        uses: actions/deploy-pages@v4
-        id: deployment
+#       - name: Deploy to Pages
+#         uses: actions/deploy-pages@v4
+#         id: deployment
 
-      - name: Show deployment URL
-        run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+#       - name: Show deployment URL
+#         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+
+
+
+
+        # use next of depend on build artifact:
+        name: Deploy to Staging
+
+        on:
+          workflow_run:
+            workflows: ["CI Pipeline"]
+            types: [completed]
+
+        concurrency:
+          group: "staging-deploy"
+          cancel-in-progress: true
+
+        permissions:
+          pages: write
+          id-token: write
+
+        jobs:
+          deploy:
+            if: >
+              github.event.workflow_run.conclusion == 'success' &&
+              github.event.workflow_run.head_branch == 'release'
+            runs-on: ubuntu-latest
+            environment:
+              name: staging
+              url: https://staging.aiopsvision.com
+            steps:
+              - name: Download Pages Artifact
+                uses: actions/download-pages-artifact@v3
+
+              - name: Add Staging CNAME
+                run: echo "staging.aiopsvision.com" > ./CNAME
+
+              - name: Setup Pages
+                uses: actions/configure-pages@v5
+
+              - name: Deploy to Staging
+                uses: actions/deploy-pages@v4
+                id: deployment
+
+              - name: Show URL
+                run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
