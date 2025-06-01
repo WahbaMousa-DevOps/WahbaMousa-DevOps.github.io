@@ -9,41 +9,41 @@ permissions:
   contents: write
 
 jobs:
-  close-or-clean:
-    if: >
-      github.repository_owner == 'WahbaMousa-DevOps' &&
-      github.event.action == 'closed' &&
-      github.event.pull_request.merged == true &&
-      github.event.pull_request.body == ''
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Label as Invalid
-        uses: actions-ecosystem/action-add-labels@v1
-        with:
-          labels: |
-            Type: Invalid
-            Type: Spam
-
-      - name: Close PR with Comment
-        uses: superbrothers/close-pull-request@v3
-        with:
-          comment: |
-            ❌ This PR was automatically closed after being merged with no description. Please ensure all PRs have proper documentation and purpose.
-
-  # delete-temp-branch:
+  # close-or-clean:
   #   if: >
   #     github.repository_owner == 'WahbaMousa-DevOps' &&
+  #     github.event.action == 'closed' &&
   #     github.event.pull_request.merged == true &&
-  #     (
-  #       (github.head_ref == 'release' && github.base_ref == 'main') ||
-  #       (startsWith(github.head_ref, 'feature/') && github.base_ref == 'develop') ||
-  #       (startsWith(github.head_ref, 'hotfix/') && github.base_ref == 'release')
-  #     )
+  #     github.event.pull_request.body == ''
   #   runs-on: ubuntu-latest
 
   #   steps:
-  #     - name: Delete Temporary PR Branch
-  #       uses: dawidd6/action-delete-branch@v3
+  #     - name: Label as Invalid
+  #       uses: actions-ecosystem/action-add-labels@v1
   #       with:
-  #         github_token: ${{ secrets.BAD_PR_HANDLER_TOKEN }}
+  #         labels: |
+  #           Type: Invalid
+  #           Type: Spam
+
+  #     - name: Close PR with Comment
+  #       uses: superbrothers/close-pull-request@v3
+  #       with:
+  #         comment: |
+  #           ❌ This PR was automatically closed after being merged with no description. Please ensure all PRs have proper documentation and purpose.
+
+  delete-temp-branch:
+    if: >
+      github.repository_owner == 'WahbaMousa-DevOps' &&
+      github.event.pull_request.merged == true &&
+      (
+        (github.head_ref == 'release' && github.base_ref == 'main') ||
+        (startsWith(github.head_ref, 'feature/') && github.base_ref == 'develop') ||
+        (startsWith(github.head_ref, 'hotfix/') && github.base_ref == 'release')
+      )
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete Temporary PR Branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.BAD_PR_HANDLER_TOKEN }}
