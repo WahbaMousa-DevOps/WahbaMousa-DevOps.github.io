@@ -53,7 +53,6 @@
 name: Deploy to Staging
 
 on:
-
   workflow_run:
     workflows: ["CI Pipeline"]
     types: [completed]
@@ -71,7 +70,7 @@ jobs:
     if: |
       github.event_name == 'workflow_run' &&
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.base_branch == 'release'
+      github.event.workflow_run.head_branch == 'release'
 
     runs-on: ubuntu-latest
     environment:
