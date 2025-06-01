@@ -52,6 +52,9 @@
 # use next of depend on build artifact:
 name:  Staging deploy
 on:
+  # push:
+  #   branches:
+  #     - release
   workflow_run:
     workflows: ["CI Pipeline"]
     types: [completed]
@@ -82,10 +85,10 @@ jobs:
           name: github-pages
           path: ./_site
 
-      - name: Add Staging CNAME
-        run: |
-          mkdir -p ./_site
-          echo "staging.aiopsvision.com" > ./_site/CNAME
+      # - name: Add Staging CNAME
+      #   run: |
+      #     mkdir -p ./_site
+      #     echo "staging.aiopsvision.com" > ./_site/CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
