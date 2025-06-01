@@ -89,7 +89,8 @@ jobs:
           path: ./_site
           retention-days: 1  # Keep artifact short-term
         # Set output to confirm artifact upload
-          run: echo "artifact_available=true" >> $GITHUB_OUTPUT
+      - name: Set artifact flag  
+        run: echo "artifact_available=true" >> $GITHUB_OUTPUT
 
   call-tests:
     uses: ./.github/workflows/test.yml
