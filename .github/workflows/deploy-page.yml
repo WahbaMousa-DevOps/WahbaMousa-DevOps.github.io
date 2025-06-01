@@ -61,7 +61,7 @@ on:
     branches:
       - main
   workflow_run:
-    workflows: ["Deploy to Staging"]
+    workflows: ["CI Pipeline"]
     types: [completed]
 
 concurrency:
