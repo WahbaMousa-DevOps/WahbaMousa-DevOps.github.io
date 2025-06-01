@@ -24,7 +24,7 @@ branches:
         require_code_owner_reviews: true
       
       # Admin and push rules
-      enforce_admins: true  # Apply rules to admins too
+      enforce_admins: true  # Apply rules to admins too 
       restrictions:
         users:
           - WahbaMousa-DevOps
