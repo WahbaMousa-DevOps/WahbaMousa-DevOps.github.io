@@ -1,44 +1,65 @@
-name: Branch Protection - Main
-branches:
-  - pattern: main
-    protection:
-      # Required status checks (both CI and deployment)
-      required_status_checks:
-        strict: true  # Require branches to be up-to-date
-        contexts:
-          # CI Pipeline checks
-          - "CI Pipeline / call-tests"
-          - "CI Pipeline / call-lint"
-          - "CI Pipeline / call-trivy"
-          - "CI Pipeline / call-sbom"
-          - "CI Pipeline / call-codeql"
-          
-          # Deployment checks
-          - "Deploy to Staging"
-          - "Deploy to Production"
-      
-      # Pull request requirements
-      required_pull_request_reviews:
-        required_approving_review_count: 1
-        dismiss_stale_reviews: true
-        require_code_owner_reviews: true
-        bypass_pull_request_allowances: 
-            users:
-              - WahbaMousa-DevOps
-      # Admin and push rules
-      enforce_admins: false  # Apply rules to admins too 
-      restrictions:
-        users:
-          - WahbaMousa-DevOps
-        teams: []  # Add team names if needed
-        apps: []   # Add app names if needed
-      
-      # Safety rules
-      allow_force_pushes: false  # Critical for production branch
-      allow_deletions: false
-      require_linear_history: true
-      required_conversation_resolution: true  # Ensure all comments are resolved
-      
-      # Deployment lock
-      lock_branch: false  # Set to true for extra protection
-      block_recreations: true
+# GitHub Branch Protection Rules (via Settings > Branches)
+
+# Main Branch Protection
+name: main
+protection_rules:
+  # Require pull request reviews
+  required_pull_request_reviews:
+    required_approving_review_count: 2  # Professional: 2 approvals
+    dismiss_stale_reviews: true
+    require_code_owner_reviews: true
+    restrict_dismissals: true
+    dismissal_restrictions:
+      users: ["WahbaMousa-DevOps"]
+      teams: []
+
+  # Required status checks (only CI, not deployment)
+  required_status_checks:
+    strict: true  # Require branches to be up-to-date
+    contexts:
+      # CI Pipeline checks only
+      - "build"                    # From CI Pipeline
+      - "call-tests"              # From CI Pipeline  
+      - "call-lint"               # From CI Pipeline
+      - "call-trivy"              # From CI Pipeline
+      - "call-sbom"               # From CI Pipeline
+      - "call-codeql"             # From CI Pipeline
+
+  # Additional protections
+  enforce_admins: true            # Apply to admins too
+  allow_force_pushes: false       # Critical for main
+  allow_deletions: false          # Prevent accidental deletion
+  require_linear_history: true    # Clean git history
+  required_conversation_resolution: true
+  
+  # Push restrictions (optional)
+  restrictions:
+    users: ["WahbaMousa-DevOps"]  # Only you can push directly
+    teams: []
+    apps: []
+
+---
+
+# Release Branch Protection  
+name: release
+protection_rules:
+  required_pull_request_reviews:
+    required_approving_review_count: 1  # Less strict for staging
+    dismiss_stale_reviews: true
+    require_code_owner_reviews: false
+
+  required_status_checks:
+    strict: true
+    contexts:
+      - "build"
+      - "call-tests"
+      - "call-lint"
+      - "call-trivy"
+      - "call-sbom"
+      - "call-codeql"
+
+  enforce_admins: false
+  allow_force_pushes: false
+  allow_deletions: false
+  require_linear_history: true
+  required_conversation_resolution: true
