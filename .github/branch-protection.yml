@@ -1,6 +1,7 @@
 # GitHub Branch Protection Rules (via Settings > Branches)
 
 # Main Branch Protection
+---
 name: main
 protection_rules:
   # Require pull request reviews
@@ -53,3 +54,4 @@ protection_rules:
   allow_deletions: false
   require_linear_history: true
   required_conversation_resolution: true
+---
