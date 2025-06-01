@@ -24,7 +24,7 @@ jobs:
       - name: Download Pages Artifact
         uses: actions/download-artifact@v4
         with:
-          name: pages-${{ github.event.workflow_run.head_branch }}
+          name: pages-${{github.event.workflow_run.head_branch}}
           path: ./_site
 
       - name: Add Production CNAME
@@ -38,4 +38,4 @@ jobs:
         id: deployment
 
       - name: Show URL
-        run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+        run: echo "Deployed to:${{steps.deployment.outputs.page_url}}"

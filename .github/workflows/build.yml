@@ -10,11 +10,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # - name: Clean Site Output 
-      #   run: |
-      #     if [ -d "_site" ]; then
-      #       rm -rf _site
-      #     fi
+      - name: Clean Site Output 
+        run: |
+          if [ -d "_site" ]; then
+            rm -rf _site
+          fi
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -22,13 +22,14 @@ jobs:
       - name: Build Jekyll Site
         uses: actions/jekyll-build-pages@v1
         with:
+          source: ./
           destination: ./_site
 
 # if Deploy stage depend on build artifact use next:
       - name: Upload Pages Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: pages-${{ github.ref_name }}
+          name: pages-${{github.ref_name}}
           path: ./_site
 
     
