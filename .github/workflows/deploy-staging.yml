@@ -53,12 +53,15 @@
 name: Deploy to Staging
 
 on:
+  push:
+    branches:
+      - main
   workflow_run:
     workflows: ["CI Pipeline"]
     types: [completed]
 
 concurrency:
-  group: "staging-deploy"
+  group: "staging-deploy-${{ github.ref }}"
   cancel-in-progress: true
 
 permissions:

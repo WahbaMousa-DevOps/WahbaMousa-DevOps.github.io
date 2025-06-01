@@ -9,27 +9,27 @@ permissions:
   contents: write
 
 jobs:
-  # close-or-clean:
-  #   if: >
-  #     github.repository_owner == 'WahbaMousa-DevOps' &&
-  #     github.event.action == 'closed' &&
-  #     github.event.pull_request.merged == true &&
-  #     github.event.pull_request.body == ''
-  #   runs-on: ubuntu-latest
+  close-or-clean:
+    if: >
+      github.repository_owner == 'WahbaMousa-DevOps' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.body == ''
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Label as Invalid
-  #       uses: actions-ecosystem/action-add-labels@v1
-  #       with:
-  #         labels: |
-  #           Type: Invalid
-  #           Type: Spam
+    steps:
+      - name: Label as Invalid
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: |
+            Type: Invalid
+            Type: Spam
 
-  #     - name: Close PR with Comment
-  #       uses: superbrothers/close-pull-request@v3
-  #       with:
-  #         comment: |
-  #           ❌ This PR was automatically closed after being merged with no description. Please ensure all PRs have proper documentation and purpose.
+      - name: Close PR with Comment
+        uses: superbrothers/close-pull-request@v3
+        with:
+          comment: |
+            ❌ This PR was automatically closed after being merged with no description. Please ensure all PRs have proper documentation and purpose.
 
   delete-temp-branch:
     if: >
