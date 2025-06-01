@@ -22,7 +22,7 @@ jobs:
           source: ./
           destination: ./_site
 
-# if Deploy stage depend on build artifact use next:
+# if Deploy stage depend on build artifact use next: .
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
