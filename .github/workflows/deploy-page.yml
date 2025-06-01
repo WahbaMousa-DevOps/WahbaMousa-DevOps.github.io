@@ -83,9 +83,11 @@ jobs:
       url: https://wahba.aiopsvision.com
     steps:
       - name: Download Pages Artifact
-        uses: actions/download-pages-artifact@v4
+        uses: actions/download-artifact@v4
         with:
-         name: pages-main
+          name: pages-${{ github.event.workflow_run.head_branch }}
+          path: ./_site
+
 
       - name: Add Production CNAME
         run: echo "wahba.aiopsvision.com" > ./CNAME
