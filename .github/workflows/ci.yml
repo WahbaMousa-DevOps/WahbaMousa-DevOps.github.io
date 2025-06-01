@@ -5,7 +5,7 @@ on:
     branches:
       - release
   push:
-    branches: [develop, 'feature/*', 'hotfix/*']
+    branches: [release, develop, 'feature/*', 'hotfix/*']
 
 jobs:
   call-tests:
