@@ -65,7 +65,7 @@ on:
     types: [completed]
 
 concurrency:
-  group: "prod-deploy"
+  group: "prod-deploy-${{ github.ref }}"
   cancel-in-progress: true
 
 permissions:

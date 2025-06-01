@@ -58,7 +58,7 @@ on:
     types: [completed]
 
 concurrency:
-  group: "staging-deploy"
+  group: "staging-deploy-${{ github.ref }}"
   cancel-in-progress: true
 
 permissions:
