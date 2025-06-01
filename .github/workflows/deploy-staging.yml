@@ -70,9 +70,12 @@ permissions:
 
 jobs:
   deploy:
-    if: >
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_run' &&
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'release'
+      github.event.workflow_run.head_branch == 'release')
+
     runs-on: ubuntu-latest
     environment:
       name: staging
@@ -81,7 +84,7 @@ jobs:
       - name: Download Pages Artifact
         uses: actions/download-pages-artifact@v3
         with:
-          name: pages-main
+          name: pages-staging
 
       - name: Add Staging CNAME
         run: echo "staging.aiopsvision.com" > ./CNAME
