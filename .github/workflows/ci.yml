@@ -79,6 +79,14 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Set Build Environment Base URL
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            echo "ENV_BASE_URL=https://wahba.aiopsvision.com" >> $GITHUB_ENV
+          else
+            echo "ENV_BASE_URL=https://staging.aiopsvision.com" >> $GITHUB_ENV
+          fi
+
       - name: Build Jekyll Site
         uses: actions/jekyll-build-pages@v1
         with:
@@ -94,8 +102,12 @@ jobs:
           retention-days: 1  
           if-no-files-found: error
         
-      - name: Set artifact flag  
-        run: echo "artifact_available=true" >> $GITHUB_OUTPUT
+      - id: check-artifact
+        run: |
+          echo "artifact_available=true" >> $GITHUB_OUTPUT
+
+      - run: echo "Available? ${{ steps.check-artifact.outputs.artifact_available }}"
+
 
   call-tests:
     uses: ./.github/workflows/test.yml
