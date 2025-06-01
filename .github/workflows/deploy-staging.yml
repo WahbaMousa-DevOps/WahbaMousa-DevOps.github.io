@@ -70,7 +70,6 @@ permissions:
 jobs:
   deploy:
     if: > 
-      (github.event_name == 'push') ||
       (github.event_name == 'workflow_run' && 
        github.event.workflow_run.conclusion == 'success' && 
        github.event.workflow_run.head_branch == 'release')
