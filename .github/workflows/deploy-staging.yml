@@ -49,46 +49,46 @@
 
 
 
-        # use next of depend on build artifact:
-        name: Deploy to Staging
+# use next of depend on build artifact:
+name: Deploy to Staging
 
-        on:
-          workflow_run:
-            workflows: ["CI Pipeline"]
-            types: [completed]
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types: [completed]
 
-        concurrency:
-          group: "staging-deploy"
-          cancel-in-progress: true
+concurrency:
+  group: "staging-deploy"
+  cancel-in-progress: true
 
-        permissions:
-          pages: write
-          id-token: write
+permissions:
+  pages: write
+  id-token: write
 
-        jobs:
-          deploy:
-            if: >
-              github.event.workflow_run.conclusion == 'success' &&
-              github.event.workflow_run.head_branch == 'release'
-            runs-on: ubuntu-latest
-            environment:
-              name: staging
-              url: https://staging.aiopsvision.com
-            steps:
-              - name: Download Pages Artifact
-                uses: actions/download-pages-artifact@v3
-                with:
-                  name: pages-main
+jobs:
+  deploy:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'release'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://staging.aiopsvision.com
+    steps:
+      - name: Download Pages Artifact
+        uses: actions/download-pages-artifact@v3
+        with:
+          name: pages-main
 
-              - name: Add Staging CNAME
-                run: echo "staging.aiopsvision.com" > ./CNAME
+      - name: Add Staging CNAME
+        run: echo "staging.aiopsvision.com" > ./CNAME
 
-              - name: Setup Pages
-                uses: actions/configure-pages@v5
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-              - name: Deploy to Staging
-                uses: actions/deploy-pages@v4
-                id: deployment
+      - name: Deploy to Staging
+        uses: actions/deploy-pages@v4
+        id: deployment
 
-              - name: Show URL
-                run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+      - name: Show URL
+        run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
