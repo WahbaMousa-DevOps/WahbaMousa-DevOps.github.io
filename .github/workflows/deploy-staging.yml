@@ -52,7 +52,7 @@
 # use next of depend on build artifact:
 name: Deploy to Staging
 on:
-  pull_request:
+  push:
     branches:
       - release
   workflow_run:
