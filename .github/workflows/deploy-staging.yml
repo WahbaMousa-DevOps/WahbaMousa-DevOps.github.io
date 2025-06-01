@@ -50,11 +50,8 @@
 
 
 # use next of depend on build artifact:
-name: Deploy to Staging
+name:  Staging deploy
 on:
-  push:
-    branches:
-      - release
   workflow_run:
     workflows: ["CI Pipeline"]
     types: [completed]
