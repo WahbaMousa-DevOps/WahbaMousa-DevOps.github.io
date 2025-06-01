@@ -1,95 +1,39 @@
-name: Setup Branch Protection
-
-on:
-  workflow_dispatch:  # Manual trigger
-  push:
-    branches: [main]
-    paths: ['.github/branch-protection.yml']
-
-jobs:
-  setup-branch-protection:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+name: Branch Protection - Main
+branches:
+  - pattern: main
+    protection:
+      # Required status checks (both CI and deployment)
+      required_status_checks:
+        strict: true  # Require branches to be up-to-date
+        contexts:
+          # CI Pipeline checks
+          - "CI Pipeline / call-tests"
+          - "CI Pipeline / call-lint"
+          - "CI Pipeline / call-trivy"
+          - "CI Pipeline / call-sbom"
+          - "CI Pipeline / call-codeql"      
+      # Pull request requirements
+      required_pull_request_reviews:
+        required_approving_review_count: 1
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: true
+        bypass_pull_request_allowances: 
+            users:
+              - WahbaMousa-DevOps
+      # Admin and push rules
+      enforce_admins: false  # Apply rules to admins too 
+      restrictions:
+        users:
+          - WahbaMousa-DevOps
+        teams: []  # Add team names if needed
+        apps: []   # Add app names if needed
       
-      - name: Setup Branch Protection for Main
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.FORCE_PROTECTION }}
-          script: |
-            const { owner, repo } = context.repo;
-            
-            try {
-              await github.rest.repos.updateBranchProtection({
-                owner,
-                repo,
-                branch: 'main',
-                required_status_checks: {
-                  strict: true,
-                  contexts: ['CI Pipeline']
-                },
-                enforce_admins: true,
-                required_pull_request_reviews: {
-                  required_approving_review_count: 2,
-                  dismiss_stale_reviews: true,
-                  require_code_owner_reviews: true,
-                  restrict_dismissals: true,
-                  dismissal_restrictions: {
-                    users: ['WahbaMousa-DevOps'],
-                    teams: []
-                  }
-                },
-                restrictions: {
-                  users: ['WahbaMousa-DevOps'],
-                  teams: [],
-                  apps: []
-                },
-                allow_force_pushes: false,
-                allow_deletions: false,
-                required_linear_history: true,
-                required_conversation_resolution: true
-              });
-              
-              console.log('Main branch protection updated successfully');
-            } catch (error) {
-              console.error('Error updating main branch protection:', error);
-              throw error;
-            }
+      # Safety rules
+      allow_force_pushes: false  # Critical for production branch
+      allow_deletions: false
+      require_linear_history: true
+      required_conversation_resolution: true  # Ensure all comments are resolved
       
-      - name: Setup Branch Protection for Release
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.FORCE_PROTECTION }}
-          script: |
-            const { owner, repo } = context.repo;
-            
-            try {
-              await github.rest.repos.updateBranchProtection({
-                owner,
-                repo,
-                branch: 'release',
-                required_status_checks: {
-                  strict: true,
-                  contexts: ['CI Pipeline']
-                },
-                enforce_admins: false,
-                required_pull_request_reviews: {
-                  required_approving_review_count: 1,
-                  dismiss_stale_reviews: true,
-                  require_code_owner_reviews: false
-                },
-                allow_force_pushes: false,
-                allow_deletions: false,
-                required_linear_history: true,
-                required_conversation_resolution: true
-              });
-              
-              console.log('Release branch protection updated successfully');
-            } catch (error) {
-              console.error('Error updating release branch protection:', error);
-              // Don't fail if release branch doesn't exist yet
-              if (error.status !== 404) {
-                throw error;
-              }
-            }
+      # Deployment lock
+      lock_branch: false  # Set to true for extra protection
+      block_recreations: true
