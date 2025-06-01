@@ -53,9 +53,7 @@
 name: Deploy to Staging
 
 on:
-  push:
-    branches:
-      - release
+
   workflow_run:
     workflows: ["CI Pipeline"]
     types: [completed]
@@ -71,10 +69,9 @@ permissions:
 jobs:
   deploy:
     if: |
-      github.event_name == 'push' &&
-      (github.event_name == 'workflow_run' &&
+      github.event_name == 'workflow_run' &&
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'release')
+      github.event.workflow_run.base_branch == 'release'
 
     runs-on: ubuntu-latest
     environment:
@@ -83,10 +80,12 @@ jobs:
     steps:
       - name: Download Pages Artifact
         uses: actions/download-artifact@v4
-
+        with:
+          name: pages-${{ github.event.workflow_run.head_branch }}
+          path: ./_site
 
       - name: Add Staging CNAME
-        run: echo "staging.aiopsvision.com" > ./CNAME
+        run: echo "staging.aiopsvision.com" > ./_site/CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
