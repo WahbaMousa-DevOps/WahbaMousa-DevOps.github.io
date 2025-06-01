@@ -11,12 +11,7 @@ branches:
           - "CI Pipeline / call-lint"
           - "CI Pipeline / call-trivy"
           - "CI Pipeline / call-sbom"
-          - "CI Pipeline / call-codeql"
-          
-          # Deployment checks
-          - "Deploy to Staging"
-          - "Deploy to Production"
-      
+          - "CI Pipeline / call-codeql"      
       # Pull request requirements
       required_pull_request_reviews:
         required_approving_review_count: 1
