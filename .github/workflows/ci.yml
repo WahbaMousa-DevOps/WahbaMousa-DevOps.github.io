@@ -85,6 +85,7 @@ jobs:
             echo "ENV_BASE_URL=https://wahba.aiopsvision.com" >> $GITHUB_ENV
           else
             echo "ENV_BASE_URL=https://staging.aiopsvision.com" >> $GITHUB_ENV
+          fi
 
       - name: Build Jekyll Site
         uses: actions/jekyll-build-pages@v1
