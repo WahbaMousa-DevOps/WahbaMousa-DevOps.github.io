@@ -63,9 +63,9 @@ concurrency:
   group: "staging-deploy-${{ github.event.workflow_run.head_branch }}"
   cancel-in-progress: true
 
-# permissions:
-#   pages: write
-#   id-token: write
+permissions:
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
@@ -90,9 +90,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # - name: Deploy to Staging
-      #   uses: actions/deploy-pages@v4
-      #   id: deployment
+      - name: Deploy to Staging
+        uses: actions/deploy-pages@v4
+        id: deployment
 
       - name: Show URL
         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
