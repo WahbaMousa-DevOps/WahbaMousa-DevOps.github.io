@@ -63,9 +63,9 @@ concurrency:
   group: "staging-deploy-${{ github.event.workflow_run.head_branch }}"
   cancel-in-progress: true
 
-# permissions:
-#   pages: write
-#   id-token: write
+permissions:
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
