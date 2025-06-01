@@ -2,17 +2,15 @@ name: Branch Protection - Main
 branches:
   - pattern: main
     protection:
-      # Required status checks (both CI and deployment)
       required_status_checks:
         strict: true  # Require branches to be up-to-date
         contexts:
-          # CI Pipeline checks
           - "CI Pipeline / call-tests"
           - "CI Pipeline / call-lint"
           - "CI Pipeline / call-trivy"
           - "CI Pipeline / call-sbom"
-          - "CI Pipeline / call-codeql"      
-      # Pull request requirements
+          - "CI Pipeline / call-codeql"    
+
       required_pull_request_reviews:
         required_approving_review_count: 1
         dismiss_stale_reviews: true
@@ -21,7 +19,7 @@ branches:
             users:
               - WahbaMousa-DevOps
       # Admin and push rules
-      enforce_admins: false  # Apply rules to admins too 
+      enforce_admins: false  
       restrictions:
         users:
           - WahbaMousa-DevOps
@@ -29,11 +27,10 @@ branches:
         apps: []   # Add app names if needed
       
       # Safety rules
-      allow_force_pushes: false  # Critical for production branch
+      allow_force_pushes: false  
       allow_deletions: false
       require_linear_history: true
       required_conversation_resolution: true  # Ensure all comments are resolved
       
-      # Deployment lock
       lock_branch: false  # Set to true for extra protection
       block_recreations: true
