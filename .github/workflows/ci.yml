@@ -54,13 +54,13 @@
 
 
 on:
-  pull_request:  # UNCOMMENTED
+  pull_request:
     branches: [release]
   push:
     branches: [release, develop, 'feature/*', 'hotfix/*']
-    
+
 concurrency:
-  group: "Bulding Stage"
+  group: "Building Stage-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: true
 
 jobs:
@@ -91,9 +91,9 @@ jobs:
         with:
           name: github-pages
           path: ./_site
-          retention-days: 1  # Keep artifact short-term
+          retention-days: 1  
           if-no-files-found: error
-        # Set output to confirm artifact upload
+        
       - name: Set artifact flag  
         run: echo "artifact_available=true" >> $GITHUB_OUTPUT
 

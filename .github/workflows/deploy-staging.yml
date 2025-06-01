@@ -143,9 +143,10 @@ jobs:
           path: ./_site
           workflow_run: ${{ steps.get-run-id.outputs.run_id }}
       
-      # Prepare and deploy
-      - name: Add CNAME
-        run: echo "staging.aiopsvision.com" > ./_site/CNAME
+      - name: Add Staging CNAME
+        run: |
+          mkdir -p ./_site  # Ensure directory exists
+          echo "staging.aiopsvision.com" > ./_site/CNAME
         
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -156,3 +157,9 @@ jobs:
         
       - name: Show URL
         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
+
+      - name: Smoke Test Staging
+        run: |
+          # Basic availability check
+          curl -sSfL ${{ steps.deployment.outputs.page_url }} > /dev/null || exit 1
+          echo "Staging site is accessible!"
