@@ -9,28 +9,6 @@ permissions:
   contents: write
 
 jobs:
-  close-or-clean:
-    if: >
-      github.repository_owner == 'WahbaMousa-DevOps' &&
-      github.event.action == 'closed' &&
-      github.event.pull_request.merged == true &&
-      github.event.pull_request.body == ''
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Label as Invalid
-        uses: actions-ecosystem/action-add-labels@v1
-        with:
-          labels: |
-            Type: Invalid
-            Type: Spam
-
-      - name: Close PR with Comment
-        uses: superbrothers/close-pull-request@v3
-        with:
-          comment: |
-            ❌ This PR was automatically closed after being merged with no description. Please ensure all PRs have proper documentation and purpose.
-
   delete-temp-branch:
     if: >
       github.repository_owner == 'WahbaMousa-DevOps' &&
@@ -47,3 +25,70 @@ jobs:
         uses: dawidd6/action-delete-branch@v3
         with:
           github_token: ${{ secrets.BAD_PR_HANDLER_TOKEN }}
+
+
+
+
+
+ # close-or-clean:
+  #   if: >
+  #     github.repository_owner == 'WahbaMousa-DevOps' &&
+  #     github.event.action == 'closed' &&
+  #     github.event.pull_request.merged == true &&
+  #     github.event.pull_request.body !== ''
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Label as Invalid
+  #       uses: actions-ecosystem/action-add-labels@v1
+  #       with:
+  #         labels: |
+  #           Type: Invalid
+  #           Type: Spam
+
+  #     - name: Close PR with Comment
+  #       uses: superbrothers/close-pull-request@v3
+  #       with:
+  #         comment: |
+  #           ❌ This PR was automatically closed after being merged with no description. Please ensure all PRs have proper documentation and purpose.
+
+# name: Auto Merge and Close PR if success
+
+# on:
+#   pull_request:
+#     types: [opened, reopened, synchronize]
+
+# permissions:
+#   pull-requests: write
+#   contents: read
+
+# jobs:
+#   auto-merge:
+#     if: github.repository_owner == 'WahbaMousa-DevOps' && github.event.pull_request.body != ''
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Get PR Metadata
+#         id: pr
+#         uses: octokit/request-action@v2.x
+#         with:
+#           route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+
+#       - name: Auto Merge PR
+#         if: |
+#           fromJSON(steps.pr.outputs.data).mergeable == true &&
+#           fromJSON(steps.pr.outputs.data).requested_reviewers == [] &&
+#           fromJSON(steps.pr.outputs.data).state == 'open'
+#         uses: peter-evans/merge-pull-request@v3
+#         with:
+#           token: ${{ secrets.PR_GITHUB_TOKEN }}
+#           merge-method: squash
+#           delete-branch: true
+#           commit-message: |
+#            Auto-merged by CI after passing all quality gates.
+
+#       - name: Confirm Success
+#         if: success()
+#         run: echo "PR auto-merged and cleaned successfully."

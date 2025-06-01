@@ -65,7 +65,7 @@ on:
     types: [completed]
 
 concurrency:
-  group: "prod-deploy-${{ github.ref }}"
+  group: "staging-deploy-${{ github.event.workflow_run.head_branch }}"
   cancel-in-progress: true
 
 permissions:
