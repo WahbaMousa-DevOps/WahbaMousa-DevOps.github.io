@@ -124,6 +124,9 @@ permissions:
 
 jobs:
   deploy:
+    environment:
+      name: staging
+      url: https://staging.aiopsvision.com
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/release') ||
