@@ -31,19 +31,19 @@ jobs:
           comment: |
             ❌ This PR was automatically closed after being merged with no description. Please ensure all PRs have proper documentation and purpose.
 
-  delete-temp-branch:
-    if: >
-      github.repository_owner == 'WahbaMousa-DevOps' &&
-      github.event.pull_request.merged == true &&
-      (
-        (github.head_ref == 'release' && github.base_ref == 'main') ||
-        (startsWith(github.head_ref, 'feature/') && github.base_ref == 'develop') ||
-        (startsWith(github.head_ref, 'hotfix/') && github.base_ref == 'release')
-      )
-    runs-on: ubuntu-latest
+  # delete-temp-branch:
+  #   if: >
+  #     github.repository_owner == 'WahbaMousa-DevOps' &&
+  #     github.event.pull_request.merged == true &&
+  #     (
+  #       (github.head_ref == 'release' && github.base_ref == 'main') ||
+  #       (startsWith(github.head_ref, 'feature/') && github.base_ref == 'develop') ||
+  #       (startsWith(github.head_ref, 'hotfix/') && github.base_ref == 'release')
+  #     )
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Delete Temporary PR Branch
-        uses: dawidd6/action-delete-branch@v3
-        with:
-          github_token: ${{ secrets.BAD_PR_HANDLER_TOKEN }}
+  #   steps:
+  #     - name: Delete Temporary PR Branch
+  #       uses: dawidd6/action-delete-branch@v3
+  #       with:
+  #         github_token: ${{ secrets.BAD_PR_HANDLER_TOKEN }}
