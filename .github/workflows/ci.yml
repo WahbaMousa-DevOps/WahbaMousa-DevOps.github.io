@@ -1,13 +1,65 @@
-name: CI Pipeline
+# name: CI Pipeline
+
+# on:
+#   # pull_request:
+#   #   branches: [release]
+#   push:
+#     branches: [release, develop, 'feature/*', 'hotfix/*']
+
+# jobs:
+
+#   build:
+#     name: Build Site
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v4
+
+#       - name: Clean Site Output 
+#         run: |
+#           if [ -d "_site" ]; then
+#             rm -rf _site
+#           fi
+
+#       - name: Configure GitHub Pages
+#         uses: actions/configure-pages@v5
+
+#       - name: Build Jekyll Site
+#         uses: actions/jekyll-build-pages@v1
+#         with:
+#           source: ./
+#           destination: ./_site
+
+#       - name: Upload GitHub Pages artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           path: ./_site
+
+
+#   call-tests:
+#     uses: ./.github/workflows/test.yml
+
+#   call-lint:
+#     uses: ./.github/workflows/lint.yml
+
+#   call-trivy:
+#     uses: ./.github/workflows/trivy.yml
+
+#   call-sbom:
+#     uses: ./.github/workflows/sbom.yml
+
+#   call-codeql:
+#     uses: ./.github/workflows/codeql.yml
+
+
 
 on:
-  # pull_request:
-  #   branches: [release]
+  pull_request:  # UNCOMMENTED
+    branches: [release]
   push:
     branches: [release, develop, 'feature/*', 'hotfix/*']
 
 jobs:
-
   build:
     name: Build Site
     runs-on: ubuntu-latest
@@ -33,23 +85,5 @@ jobs:
       - name: Upload GitHub Pages artifact
         uses: actions/upload-artifact@v4
         with:
+          name: github-pages  # ADDED NAME
           path: ./_site
-
-
-  call-tests:
-    uses: ./.github/workflows/test.yml
-
-  call-lint:
-    uses: ./.github/workflows/lint.yml
-
-  call-trivy:
-    uses: ./.github/workflows/trivy.yml
-
-  call-sbom:
-    uses: ./.github/workflows/sbom.yml
-
-  call-codeql:
-    uses: ./.github/workflows/codeql.yml
-
-
-
