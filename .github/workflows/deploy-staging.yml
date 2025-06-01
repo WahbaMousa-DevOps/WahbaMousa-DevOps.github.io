@@ -75,9 +75,9 @@ jobs:
        github.event.workflow_run.head_branch == 'release')
 # here success on push not pr or last stage ci pipeline also package. 
     runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: https://staging.aiopsvision.com
+    # environment:
+    #   name: staging
+    #   url: https://staging.aiopsvision.com
     steps:
       - name: Download GitHub Pages Artifact
         uses: actions/download-artifact@v4
@@ -85,10 +85,10 @@ jobs:
           name: github-pages
           path: ./_site
 
-      # - name: Add Staging CNAME
-      #   run: |
-      #     mkdir -p ./_site
-      #     echo "staging.aiopsvision.com" > ./_site/CNAME
+      - name: Add Staging CNAME
+        run: |
+          mkdir -p ./_site
+          echo "staging.aiopsvision.com" > ./_site/CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
