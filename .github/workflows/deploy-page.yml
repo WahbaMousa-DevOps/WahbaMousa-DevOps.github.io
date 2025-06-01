@@ -83,7 +83,7 @@ jobs:
       url: https://wahba.aiopsvision.com
     steps:
       - name: Download Pages Artifact
-        uses: actions/download-pages-artifact@v3
+        uses: actions/download-pages-artifact@v4
         with:
          name: pages-main
 

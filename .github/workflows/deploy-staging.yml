@@ -82,9 +82,9 @@ jobs:
       url: https://staging.aiopsvision.com
     steps:
       - name: Download Pages Artifact
-        uses: actions/download-pages-artifact@v3
+        uses: actions/download-pages-artifact@v4
         with:
-          name: pages-staging
+          name: pages-release
 
       - name: Add Staging CNAME
         run: echo "staging.aiopsvision.com" > ./CNAME
