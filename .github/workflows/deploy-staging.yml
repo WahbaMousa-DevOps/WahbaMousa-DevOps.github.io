@@ -57,9 +57,9 @@ on:
     workflows: ["CI Pipeline"]
     types: [completed]
 
-# concurrency:
-#   group: "staging-deploy-${{ github.event.workflow_run.head_branch }}"
-#   cancel-in-progress: true
+concurrency:
+  group: "staging-deploy-${{ github.event.workflow_run.head_branch }}"
+  cancel-in-progress: true
 
 permissions:
   pages: write
@@ -67,10 +67,10 @@ permissions:
 
 jobs:
   deploy:
-    # if: |
-    #   github.event_name == 'workflow_run' &&
-    #   github.event.workflow_run.conclusion == 'success' &&
-    #   github.event.workflow_run.head_branch == 'release'
+    if: >
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'release'
 
     runs-on: ubuntu-latest
     environment:
