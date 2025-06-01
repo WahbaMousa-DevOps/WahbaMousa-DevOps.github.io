@@ -134,8 +134,11 @@ jobs:
         id: get-run-id
         run: |
           echo "run_id=${{ github.event.workflow_run.id }}" >> $GITHUB_OUTPUT
-      
-      # Download artifact from CI Pipeline
+
+      - name: Check artifact availability
+        run: |
+          ls -l ./_site || (echo "Artifact missing!" && exit 1)
+
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
