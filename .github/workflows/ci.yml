@@ -2,7 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [develop, 'feature/*', 'hotfix/*']
+    branches: [release, main, develop, 'feature/*', 'hotfix/*']
 
 jobs:
   call-tests:
