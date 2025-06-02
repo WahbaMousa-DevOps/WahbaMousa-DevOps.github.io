@@ -58,12 +58,15 @@
 name: Deploy to Production
 
 on:
+  push:
+    branches:
+      - release
   workflow_run:
     workflows: ["CI Pipeline"]
     types:
       - completed
     branches:
-      - main  # trigger only when CI passes for main
+      - release  # trigger only when CI passes for main
 
 permissions:
   pages: write
