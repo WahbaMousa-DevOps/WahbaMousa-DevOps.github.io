@@ -3,7 +3,7 @@ branches:
   - pattern: main
     protection:
       required_status_checks:
-        strict: true  # Require branches to be up-to-date
+        strict: true  
         contexts:
           - "CI Pipeline / call-tests"
           - "CI Pipeline / call-lint"
@@ -24,7 +24,7 @@ branches:
         users:
           - WahbaMousa-DevOps
         teams: []  # Add team names if needed
-        apps: []   # Add app names if needed
+        apps: []   
       
       # Safety rules
       allow_force_pushes: false  
