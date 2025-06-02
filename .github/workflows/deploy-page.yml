@@ -28,15 +28,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache Jekyll gems
-        uses: actions/cache@v4
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: ${{ runner.os }}-gems-
+      # - name: Cache Jekyll gems
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: vendor/bundle
+      #     key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+      #     restore-keys: ${{ runner.os }}-gems-
 
-      - name: Add Production CNAME
-        run: echo "wahba.aiopsvision.com" > ./CNAME
+      # - name: Add Production CNAME
+      #   run: echo "wahba.aiopsvision.com" > ./CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
