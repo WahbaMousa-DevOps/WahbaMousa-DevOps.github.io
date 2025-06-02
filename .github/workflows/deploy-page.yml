@@ -33,7 +33,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gems-
 
       - name: Add Production CNAME
-        run: echo "wahba.aiopsvision.com" > ./CNAME
+        run: echo "wahba.aiopsvision.com" > ./_site/CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
