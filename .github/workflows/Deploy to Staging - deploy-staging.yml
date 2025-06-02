@@ -61,12 +61,6 @@ on:
   push:
     branches:
       - release
-  workflow_run:
-    workflows: ["CI Pipeline"]
-    types:
-      - completed
-    branches:
-      - develop  # trigger only when CI passes for main
 
 permissions:
   pages: write
@@ -78,9 +72,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: >
-      github.event.workflow_run.conclusion == 'success' ||
-      github.event.workflow_run.event == 'push'
+
 
     runs-on: ubuntu-latest
     environment:
