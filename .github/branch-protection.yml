@@ -11,22 +11,22 @@ branches:
           - "CI Pipeline / call-sbom"
           - "CI Pipeline / call-codeql"
         
-      required_pull_request_reviews:
-        required_approving_review_count: 1 
-        dismiss_stale_reviews: true 
-        require_code_owner_reviews: true 
-        bypass_pull_request_allowances: 
-          users:
-            - WahbaMousa-DevOps
-      enforce_admins: false  
-      restrictions:
-        users:
-          - WahbaMousa-DevOps  
-          - github-actions[bot]
-        teams: []
-        apps: []
-      allow_force_pushes: true 
-      allow_deletions: false   
+      # required_pull_request_reviews:
+      #   required_approving_review_count: 1 
+      #   dismiss_stale_reviews: true 
+      #   require_code_owner_reviews: true 
+      #   bypass_pull_request_allowances: 
+      #     users:
+      #       - WahbaMousa-DevOps
+      # enforce_admins: false  
+      # restrictions:
+      #   users:
+      #     - WahbaMousa-DevOps  
+      #     - github-actions[bot]
+      #   teams: []
+      #   apps: []
+      # allow_force_pushes: true 
+      # allow_deletions: false   
 #       require_linear_history: true
 #       required_conversation_resolution: true  
 
