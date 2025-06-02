@@ -58,9 +58,9 @@
 name: Deploy to Production
 
 on:
-  push:
-    branches:
-      - release
+  # push:
+  #   branches:
+  #     - release
   workflow_run:
     workflows: ["CI Pipeline"]
     types:
