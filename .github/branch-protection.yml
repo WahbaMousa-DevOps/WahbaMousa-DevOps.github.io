@@ -30,7 +30,7 @@ branches:
       allow_force_pushes: false  
       allow_deletions: false
       require_linear_history: true
-      required_conversation_resolution: true  # Ensure all comments are resolved
+      required_conversation_resolution: true  
       
       lock_branch: false  # Set to true for extra protection
       block_recreations: true
