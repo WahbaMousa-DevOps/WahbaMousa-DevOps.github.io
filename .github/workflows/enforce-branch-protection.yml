@@ -3,10 +3,10 @@ on:
   pull_request:
     branches: 
       - main
-  push:
-    paths:
-      - .github/branch-protection.yml
-      - .github/scripts/parse-and-apply.py
+  # push:
+  #   paths:
+  #     - .github/branch-protection.yml
+  #     - .github/scripts/parse-and-apply.py
 
 permissions:
   contents: write  
