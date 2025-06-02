@@ -61,3 +61,4 @@ jobs:
           # Add your smoke tests here if needed
           # curl -sSfL ${{ steps.deployment.outputs.page_url }} > /dev/null
           echo "Production health check completed"
+
