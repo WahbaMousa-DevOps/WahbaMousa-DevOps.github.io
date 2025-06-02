@@ -2,8 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [develop, 'feature/*', 'hotfix/*']
-
+    branches: [main, release, develop, 'feature/*', 'hotfix/*']
 jobs:
   call-tests:
     uses: ./.github/workflows/test.yml
@@ -21,6 +20,7 @@ jobs:
     uses: ./.github/workflows/codeql.yml
 
   call-build:
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build.yml # add full build here instead of separate file if need to use its package in deploy directly
+
 
 
