@@ -78,7 +78,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment:
-      name: production
+      name: staging
       url: https://staging.aiopsvision.com
 
     steps:
@@ -105,13 +105,13 @@ jobs:
 
       - name: Post-deployment verification
         run: |
-          echo "✅ Production deployment completed"
-          echo "🌍 URL: ${{ steps.deployment.outputs.page_url }}"
-          echo "📦 Branch: ${{ github.event.workflow_run.head_branch }}"
-          echo "🔢 Commit: ${{ github.event.workflow_run.head_sha }}"
+          echo "Production deployment completed"
+          echo "URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Commit: ${{ github.event.workflow_run.head_sha }}"
 
       - name: Smoke Test
         run: |
           echo "Running health checks..."
           # curl -sSfL ${{ steps.deployment.outputs.page_url }} > /dev/null
-          echo "✅ Health check passed"
+          echo "Health check passed"
