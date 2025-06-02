@@ -30,5 +30,5 @@ branches:
 #       require_linear_history: true
 #       required_conversation_resolution: true  
 
-#       lock_branch: false  # Set to true for extra protection
+#       lock_branch: false # Set to true for extra protection
 #       block_recreations: true
