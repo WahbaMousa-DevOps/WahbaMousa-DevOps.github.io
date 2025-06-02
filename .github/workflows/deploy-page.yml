@@ -53,7 +53,7 @@
 #       - name: Verify deployment
 #         run: echo "Deployed to:${{ steps.deployment.outputs.page_url }}"
 
- # use next of depend on build artifact:
+# use next of depend on build artifact:
 name: Deploy to Production
 
 on:
