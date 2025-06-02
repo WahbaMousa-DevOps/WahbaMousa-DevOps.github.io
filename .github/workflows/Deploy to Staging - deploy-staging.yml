@@ -52,5 +52,5 @@ jobs:
         run: |
           echo "Staging deployment completed successfully"
           echo "Environment: staging"
-          echo "Branch: ${{ github.ref_name }}"
+          echo "Branch: ${{ github.base_ref }}"
           echo "Commit: ${{ github.sha }}"
