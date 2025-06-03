@@ -1,6 +1,6 @@
 name: CI Pipeline
 
-on:
+on: # Jobs run in parallel by default unless you define needs: to specify order.
   push:
     branches: [main, release, develop, 'feature/*', 'hotfix/*']
 jobs:

@@ -1,7 +1,7 @@
 name: Protect main branch
 branches:
   - pattern: main
-    protection:
+    protection: # GitHub Actions and Protection Rules do not care about the sequence — only about the presence and exact naming match.
       required_status_checks:
         strict: true # the source must be up to date with this target main before PR "so must pull main on source"
         contexts:
