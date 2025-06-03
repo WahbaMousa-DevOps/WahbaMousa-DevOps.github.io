@@ -3,13 +3,14 @@ branches:
   - pattern: main
     protection:
       required_status_checks:
-        strict: true # must pull before PR
+        strict: true # the source must be up to date with this target main before PR "so must pull main on source"
         contexts:
           - "CI Pipeline / call-tests"
           - "CI Pipeline / call-lint" 
           - "CI Pipeline / call-trivy"
           - "CI Pipeline / call-sbom"
           - "CI Pipeline / call-codeql"
+          - "CI Pipeline / call-scan"
         
       required_pull_request_reviews:
         required_approving_review_count: 1 
