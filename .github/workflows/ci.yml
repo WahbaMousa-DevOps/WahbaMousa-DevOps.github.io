@@ -20,7 +20,7 @@ jobs:
     uses: ./.github/workflows/codeql.yml
 
   call-build:
-    uses: ./.github/workflows/build.yml # add full build here instead of separate file if need to use its package in deploy directly
+    uses: ./.github/workflows/build.yml # add full build here instead of separate file if need to use its package in deploy directly in deploy from branch but if deploy from actions keep it as Actions support multi wrokflow deploy.
 
 
 
