@@ -10,11 +10,11 @@ jobs:
   call-lint:
     uses: ./.github/workflows/lint.yml
 
-  call-lint:
-    uses: ./.github/workflows/lint.yml
+  call-md-link:
+    uses: ./.github/workflows/md-links-check.yml
 
   call-trivy:
-    uses: ./.github/workflows/md-links-check.yml
+    uses: ./.github/workflows/trivy.yml
 
   call-sbom:
     uses: ./.github/workflows/sbom.yml
