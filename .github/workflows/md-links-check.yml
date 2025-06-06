@@ -24,13 +24,8 @@ jobs:
         config_file: ".markdownlint.yml"
 
 
-    - name: Install Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-
-    - name: Install linkspector
-      run: npm install -g @umbrelladocs/action-linkspector
-
     - name: Run linkspector
-      run: linkspector --config .linkspector.yml
+      uses: UmbrellaDocs/action-linkspector@v1
+      with:
+        config: .linkspector.yml
+
