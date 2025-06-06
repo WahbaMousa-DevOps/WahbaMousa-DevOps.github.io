@@ -1,8 +1,8 @@
-version: 2 #  Updates your project dependencies (libraries your code uses)
+version: 2 # Updates project dependencies (libraries code uses)
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
-    target-branch: "develop"  #force PRs to go to develop
+    target-branch: "develop"  
     schedule:
       interval: "daily"
     open-pull-requests-limit: 2
