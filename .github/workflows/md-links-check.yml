@@ -20,7 +20,7 @@ jobs:
     - name: Run markdownlint-cli
       uses: nosborn/github-action-markdown-cli@v3
       with:
-        files: "."
+        files: "./"
         config_file: ".markdownlint.yml"
 
 
