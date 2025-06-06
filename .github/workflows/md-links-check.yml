@@ -4,7 +4,7 @@ on:
   workflow_call:
   push:
     paths:
-   #   - '**.md'
+      - '**.md'
       - .markdownlint.yml
       - .linkspector.yml
 
@@ -20,8 +20,9 @@ jobs:
     - name: Run markdownlint-cli
       uses: nosborn/github-action-markdown-cli@v3
       with:
-        files: "./"
+        files: "."
         config_file: ".markdownlint.yml"
+        ignore_files: "README.md"
 
 
     - name: Install Node.js
