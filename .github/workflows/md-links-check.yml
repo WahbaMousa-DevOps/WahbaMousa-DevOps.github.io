@@ -4,7 +4,7 @@ on:
   workflow_call:
   push:
     paths:
-      - '**.md'
+   #   - '**.md'
       - .markdownlint.yml
       - .linkspector.yml
 
@@ -22,6 +22,7 @@ jobs:
       with:
         files: "."
         config_file: ".markdownlint.yml"
+
 
     - name: Install Node.js
       uses: actions/setup-node@v4
