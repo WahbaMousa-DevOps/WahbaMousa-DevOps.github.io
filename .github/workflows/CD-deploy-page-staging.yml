@@ -22,7 +22,8 @@ permissions:
   id-token: write
 
 jobs:
-  build-deploy-Green:
+  build-deploy-staging:
+
     runs-on: ubuntu-latest
     environment:
       name: staging
