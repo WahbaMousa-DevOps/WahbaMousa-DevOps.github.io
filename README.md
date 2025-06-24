@@ -8,12 +8,11 @@
 
 - CI/CD with GitHub Actions
 - Security-first architecture (CodeQL, Trivy, Gitleaks, SBOM)
-- Blue-Green deployment strategy
+- Rolling deployment strategy
 - Branch protection enforcement via GitHub CLI
 
-[![CI Pipeline](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/actions/workflows/CI-ci.yml/badge.svg)](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/actions/workflows/CI-ci.yml)
-[![Deploy to Green](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/workflows/Deploy%20to%20Staging/badge.svg)](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/actions/workflows/deploy-staging.yml)
-[![Deploy to Blue](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/workflows/Deploy%20to%20Production/badge.svg)](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/actions/workflows/deploy-production.yml)
+[![CI Pipeline](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/actions/workflows/CI.yml/badge.svg)](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/actions/workflows/CI.yml)
+[![Deploy to Production](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/workflows/Deploy%20to%20Production/badge.svg)](https://github.com/WahbaMousa-DevOps/WahbaMousa-DevOps.github.io/actions/workflows/deploy-production.yml)
 
 ## 🏗️ Architecture Overview: CI/CD + Security Flow
 
@@ -85,9 +84,8 @@
 📝 Note: `sbom-image.yml` and Cosign-based Docker image signing are included as modular references for future container-based pipelines. They are **not active** in this static GitHub Pages project.
 
 
-### 🌐  Blue-Green Deployments
-- **Blue**: [https://wahba.aiopsvision.com](https://wahba.aiopsvision.com)
-- **Green**: [https://staging.aiopsvision.com](https://staging.aiopsvision.com)
+### 🌐  Rolling Deployments
+- **Production**: [https://wahba.aiopsvision.com](https://wahba.aiopsvision.com)
 
 ## 🚀 Technology Stack
 
@@ -128,8 +126,8 @@
 ### **GitFlow Implementation**
 
 ```
-main        ← 🟦 Blue Environment (Production)
-├── release ← 🟩 Green Environment (Staging)
+main        ← 🟦 Production Environment
+├── release ← 🟩 Staging Environment
     ├── develop       ← Integration / QA Branch
         ├── feature/* ← New Features
         ├── hotfix/*  ← Emergency Fixes
@@ -140,7 +138,7 @@ swap.yml is used to promote release → main after successful staging validation
 
 ### **Branch Protection Rules**
 
-#### **Main Branch (Blue – Production)**
+#### **Main Branch ( Production)**
 ```yaml
 Require PR review (1+)
 Require code owner review
@@ -154,7 +152,7 @@ Restrict deletions
 
 ```
 
-#### **Release Branch (Green – Staging → Production Candidate)**
+#### **Release Branch ( Staging → Production Candidate)**
 ```yaml
 Require PR review (1+)
 Require code owner review
@@ -186,12 +184,6 @@ Stages:
   8. SBOM Generation (Syft / Trivy)
   9. Image Signing (Cosign)
  10. Quality Gate Summary
-```
-### **🚀 Continuous Deployment**
-```yaml
-➤ deploy-page-staging.yml → Green (staging.aiopsvision.com)
-➤ deploy-page-production.yml → Blue (wahba.aiopsvision.com)
-➤ swap.yml → Manually promote Green → Blue
 ```
 
 ## 🔧 Local Development
@@ -241,8 +233,8 @@ git push origin feature/your-feature-name
 4. Ensure all quality gates pass
 5. Submit pull request with detailed description
 6. Code review and approval process
-7. Automated deployment to green
-8. Swap promotion to blue
+7. Automated deployment to Staging
+8. promotion to Production
 
 
 <!-- ## 📞 Support & Contact
