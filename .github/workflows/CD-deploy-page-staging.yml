@@ -30,7 +30,7 @@ jobs:
       url: ${{ env.ENV_BASE_URL }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Cache Jekyll gems # caches Ruby gem dependencies (in vendor/bundle) based on the Gemfile.lock hash to speed up future Jekyll builds.
         uses: actions/cache@v4

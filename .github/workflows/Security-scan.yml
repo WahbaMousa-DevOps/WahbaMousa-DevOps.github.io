@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Gitleaks Scan # Scans Git history and source code for hardcoded secrets (tokens, keys) by gitleaks file
         uses: gitleaks/gitleaks-action@v2
